@@ -1,0 +1,113 @@
+<!-- 
+Copyright 2013 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <link rel="author" title="Sandy Phan, Sarah Heimlich", href="mailto:sandyphan@google.com, sarahheimlich@google.com">
+    <title>Sequential Animation Group Exercise 3</title>
+    <meta name="flags" content="dom">
+    <meta name="tutorial" content="Web Animations tutorials">
+    <link rel="stylesheet" type="text/css" href="../tutorialStyle.css">
+  </head>
+
+  <body  onload="displayDefault()">
+    <ul class="topMenu">
+      <li><a href="../homePage.html">Home</a></li>
+      <li><a href="#">Tutorials</a>
+        <ul class="subMenu">
+          <li><a href="../basicAnimations/createBasicAnim.html">Basic Animations</a></li>
+          <li><a href="../parallel/parallel.html">Parallel Animations</a></li>
+          <li><a href="sequence/sequence.html">Sequence Animations</a></li>
+          <li><a href="../timing-dictionary/timingDict.html">Timing Dictionary</a></li>
+          <li><a href="../timing-functions/timeFunctions.html">Timing Functions</a></li>
+        </ul>
+      </li>
+      <li><a href="../references/references.html">References</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+      
+    <div id="main">
+
+      <div id="title">Web Animations Tutorial</div>
+
+      <div class="line-separator"></div>
+
+      <div class="content">
+
+      	<div class="heading subTitle">Sequential Animation Group</div>
+
+        <div class="heading exercises">Exercise 3 - More Challenges</div>
+
+        <p class="description">Now you know how to use both parallel and sequential animation groups. Let's get started on some harder exercises.</p>
+
+        <p class="description">For this exercise, create 4 animations to 4 different items. Divide the animations evenly into 2 groups where the first group contains the 1st and 2nd elements. The second group should wait until the first group has finished running to run. The elements of the first group should move 300px and 400px from left respectively. The group should run for 3 seconds and repeat twice. The second group should move 300px and 400px from left respectively where the 2nd element in the group will have to wait half way to start. That is each elemnt should run for 4 seconds and the 2nd element will wait for 2 seconds to run. The second group should also repeat itself 3 times. In addition, the first group will change colours from red to green then back to red, the second group will change colours from blue to yellow then to blue.</p>
+
+        <ul class="description">
+          <li>Create 4 animations.</li>
+          <li>Create 2 groups, group the 1st and 2nd elements into the first and the rest into the second.</li>
+          <li>Animate the first group such that it repeats twice. Elements in this group should run in parallel.</li>
+          <li>Animate the second group such that one runs half way to anther and repeats itself 3 times. Elements should run in sequence</li>
+          <li>First group changes colour from red to green then to red.</li>
+          <li>Second group changes colour from blue to yellow then to blue.</li>
+        </ul>
+
+        <div id="hideLabel" onclick="toggleSolution()">Show Solution</div>
+        <div id="toggleText" class="codeSamples">
+          <code>
+            var group1 = new ParGroup([], {iterationCount: 2}); <br />
+            new Animation(document.querySelector("#a"), {left: "300px"}, 3, group1); <br />
+            new Animation(document.querySelector("#b"), {left: "400px"}, 3, group1); <br />
+            var group2 = new SeqGroup([], {iterationCount: 3}); <br />
+            new Animation(document.querySelector("#c"), {left: "300px"}, 4, group2); <br />
+            new Animation(document.querySelector("#d"), {left: "400px"}, {startDelay: -2, duration: 4}, group2); <br />
+            var elems = document.querySelectorAll(".test"); <br />
+            for (var i = 0; i < elems.length; i++) { <br />
+              if (i < 2) { <br />
+                new Animation(elems[i], {"background-color:", ["red", "green", "red"]}, 3, group1); <br />
+              } else { <br />
+                new Animation(elems[i], {"background-color:", ["blue", "yellow", "blue"]}, 4, group2); <br />
+              } <br />
+            } <br />
+            var seq = new SeqGroup([group1, group2]); <br />
+            seq.play();
+          </code>
+        </div>
+
+        <div id="tryIt"></div>
+
+        <div class="separator"></div>
+
+      </div>  <!-- content ending div -->
+
+      <div class="line-separator"></div>
+
+      <div class="separator"></div>
+    </div> <!-- main ending div -->
+
+    <ul class="sideMenu">
+      <li id="menuLabel">Sequential Animation Group</li>
+      <li><a href="sequence.html">Basic Info</a></li>
+      <li><a href="sequenceExercise1.html">Exercise 1</a></li>
+      <li><a href="sequenceExercise2.html">Exercise 2</a></li>
+      <li><a href="sequenceExercise3.html">Exercise 3</a></li>
+    </ul>
+
+    <script type="text/javascript" src="../tryItYourself.js"></script>
+  </body>
+</html>

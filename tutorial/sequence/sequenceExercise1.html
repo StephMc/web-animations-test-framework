@@ -1,0 +1,96 @@
+<!-- 
+Copyright 2013 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <link rel="author" title="Sandy Phan, Sarah Heimlich", href="mailto:sandyphan@google.com, sarahheimlich@google.com">
+    <title>Sequential Animation Group Exercise 1</title>
+    <meta name="flags" content="dom">
+    <meta name="tutorial" content="Web Animations tutorials">
+    <link rel="stylesheet" type="text/css" href="../tutorialStyle.css">
+  </head>
+
+  <body  onload="displayDefault()">
+    <ul class="topMenu">
+      <li><a href="../homePage.html">Home</a></li>
+      <li><a href="#">Tutorials</a>
+        <ul class="subMenu">
+          <li><a href="../basicAnimations/createBasicAnim.html">Basic Animations</a></li>
+          <li><a href="../parallel/parallel.html">Parallel Animations</a></li>
+          <li><a href="sequence/sequence.html">Sequence Animations</a></li>
+          <li><a href="../timing-dictionary/timingDict.html">Timing Dictionary</a></li>
+          <li><a href="../timing-functions/timeFunctions.html">Timing Functions</a></li>
+        </ul>
+      </li>
+      <li><a href="../references/references.html">References</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+      
+    <div id="main">
+
+      <div id="title">Web Animations Tutorial</div>
+
+      <div class="line-separator"></div>
+
+      <div class="content">
+
+      	<div class="heading subTitle">Sequential Animation Group</div>
+
+        <div class="heading exercises">Exercise 1 - Make a Sequential Group</div>
+
+        <p class="description">Similar to parallel animation groups, there are a few ways to include children into the sequential groups.</p>
+
+        <p class="description">In this exercise, use the old method - first create all necessary animations then include them into the group.</p>
+
+        <p class="description">Create 3 animations that runs sequentially, the first animation runs diagonally 300px from left and 300px from top, the second animation runs diagonally 600px from left and 0px from top, then the third animation moves back to the start position. Each animation should take 3 seconds to run.</p>
+
+        <p class="description note">Note: this exercise should only need one animation div, so do not make more divs. Do not add any start delay.</p>
+
+        <div id="hideLabel" onclick="toggleSolution()">Show Solution</div>
+        <div id="toggleText" class="codeSamples">
+          <code>var A = new Animation(document.querySelector("#a"), {left: "300px", top: "300px"}, 3); <br />
+                var B = new Animation(document.querySelector("#a"), {left: "600px", top: "0px"}, 3); <br />
+                var C = new Animation(document.querySelector("#a"), {left: "0px", top: "0px"}, 3); <br />
+                var seq = new SeqGroup([A, B, C]); <br />
+                seq.play();
+          </code>
+        </div>
+
+        <div id="tryIt"></div>
+
+        <div class="separator"></div>
+
+      </div>  <!-- content ending div -->
+
+      <div class="line-separator"></div>
+
+      <div class="separator"></div>
+    </div> <!-- main ending div -->
+
+    <ul class="sideMenu">
+      <li id="menuLabel">Sequential Animation Group</li>
+      <li><a href="sequence.html">Basic Info</a></li>
+      <li><a href="sequenceExercise1.html">Exercise 1</a></li>
+      <li><a href="sequenceExercise2.html">Exercise 2</a></li>
+      <li><a href="sequenceExercise3.html">Exercise 3</a></li>
+    </ul>
+
+    <script type="text/javascript" src="../tryItYourself.js"></script>
+  </body>
+</html>

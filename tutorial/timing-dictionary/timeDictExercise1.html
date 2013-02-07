@@ -1,0 +1,90 @@
+<!-- 
+Copyright 2013 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <link rel="author" title="Sandy Phan, Sarah Heimlich", href="mailto:sandyphan@google.com, sarahheimlich@google.com">
+    <title>Timing Dictionary Exercise 1</title>
+    <meta name="flags" content="dom">
+    <meta name="tutorial" content="Web Animations tutorials">
+    <link rel="stylesheet" type="text/css" href="../tutorialStyle.css">
+  </head>
+
+  <body  onload="displayDefault()">
+    <ul class="topMenu">
+      <li><a href="../homePage.html">Home</a></li>
+      <li><a href="#">Tutorials</a>
+        <ul class="subMenu">
+          <li><a href="../basicAnimations/createBasicAnim.html">Basic Animations</a></li>
+          <li><a href="../parallel/parallel.html">Parallel Animations</a></li>
+          <li><a href="../sequence/sequence.html">Sequence Animations</a></li>
+          <li><a href="timing-dictionary/timingDict.html">Timing Dictionary</a></li>
+          <li><a href="../timing-functions/timeFunctions.html">Timing Functions</a></li>
+        </ul>
+      </li>
+      <li><a href="../references/references.html">References</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+      
+    <div id="main">
+
+      <div id="title">Web Animations Tutorial</div>
+
+      <div class="line-separator"></div>
+
+      <div class="content">
+
+      	<div class="heading subTitle">Timing Dictionary</div>
+
+        <div class="heading exercises">Exercise 1 - Start in the middle</div>
+
+        <p class="description">Now you know how to create basic animations. We can now try to add some more timing properties into the animation</p>
+
+        <p class="description">Let's now make animation move 300px from left and 400px from top (i.e. moving diagonally), and it will move for 5 seconds and will start after a 2 seconds into the animation.</p>
+
+        <p class="description">Hint: use startTime</p>
+
+        <div id="hideLabel" onclick="toggleSolution()">Show Solution</div>
+        <div id="toggleText" class="codeSamples"><code>new Animation(document.querySelector("#a"), {left: "300px", top: "400px"}, {startTime: 2, duration: 5});</code></div>
+
+        <div id="tryIt"></div>
+
+        <div class="separator"></div>
+
+      </div>  <!-- content ending div -->
+
+      <div class="line-separator"></div>
+
+      <div class="separator"></div>
+    </div> <!-- main ending div -->
+
+    <ul class="sideMenu">
+      <li id="menuLabel">Timing Dictionary</li>
+      <li><a href="timingDict.html">Basic Info</a></li>
+      <li><a href="timeDictExercise1.html">Exercise 1</a></li>
+      <li><a href="timeDictExercise2.html">Exercise 2</a></li>
+      <li><a href="timeDictExercise3.html">Exercise 3 - Not yet available</a></li>
+      <li><a href="timeDictExercise4.html">Exercise 4</a></li>
+      <li><a href="timeDictExercise5.html">Exercise 5 - Not yet available</a></li>
+      <li><a href="timeDictExercise6.html">Exercise 6</a></li>
+    </ul>
+
+    <script type="text/javascript" src="../tryItYourself.js"></script>
+  </body>
+</html>

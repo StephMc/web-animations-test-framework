@@ -1,0 +1,94 @@
+<!-- 
+Copyright 2013 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <link rel="author" title="Sandy Phan, Sarah Heimlich", href="mailto:sandyphan@google.com, sarahheimlich@google.com">
+    <title>Timing Functions Exercise 3</title>
+    <meta name="flags" content="dom">
+    <meta name="tutorial" content="Web Animations tutorials">
+    <link rel="stylesheet" type="text/css" href="../tutorialStyle.css">
+  </head>
+
+  <body  onload="displayDefault()">
+    <ul class="topMenu">
+      <li><a href="../homePage.html">Home</a></li>
+      <li><a href="#">Tutorials</a>
+        <ul class="subMenu">
+          <li><a href="../basicAnimations/createBasicAnim.html">Basic Animations</a></li>
+          <li><a href="../parallel/parallel.html">Parallel Animations</a></li>
+          <li><a href="../sequence/sequence.html">Sequence Animations</a></li>
+          <li><a href="../timing-dictionary/timingDict.html">Timing Dictionary</a></li>
+          <li><a href="timing-functions/timeFunctions.html">Timing Functions</a></li>
+        </ul>
+      </li>
+      <li><a href="../references/references.html">References</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+      
+    <div id="main">
+
+      <div id="title">Web Animations Tutorial</div>
+
+      <div class="line-separator"></div>
+
+      <div class="content">
+
+      	<div class="heading subTitle">Timing Functions</div>
+
+        <div class="heading exercises">Exercise 3 - More Easing (Challenge)</div>
+
+        <p class="description">Easing with presets string are easy, but a bit boring. What if you want to set your own timing so that it go fast and slow at certain point of time according to your likings? Well, to something I did not mention at the beginning of this section, is, for timing functions, you can set your own values by inputing values in the range [0,1]. Note that the number does not have to be in order.</p>
+
+        <p class="description">You could have done something like this:</p>
+
+        <code class="codeSamples">new Animation(document.querySelector("#a"), {top: "400px"}, {duration: 5, timingFunction: new TimingFunction([0, 0,2, 0.8, 1])});</code>
+
+        <p class="description">OR</p>
+
+        <code class="codeSamples">new Animation(document.querySelector("#a"), {top: "400px"}, {duration: 5, timingFunction: new TimingFunction([0, 1, 0.1, 1])});</code>
+
+        <p class="description">You can try the above codes in the editor below to see what they do. Though for this exercise, make an animation that runs very slowly at the beginning then ends really fast. The animation should move for 5 seconds 300px from left. In this exercise the lowest value above 0 would be 0.1 and highest would be 1.</p>
+
+
+        <div id="hideLabel" onclick="toggleSolution()">Show Solution</div>
+        <div id="toggleText" class="codeSamples"><code>new Animation(document.querySelector("#a"), {left: "300px"}, {duration: 5, timingFunction: new TimingFunction([1, 0.1, 1, 1])});</code></div>
+
+        <div id="tryIt"></div>
+
+        <div class="separator"></div>
+
+      </div>  <!-- content ending div -->
+
+      <div class="line-separator"></div>
+
+      <div class="separator"></div>
+    </div> <!-- main ending div -->
+
+    <ul class="sideMenu">
+      <li id="menuLabel">Timing Functions</li>
+      <li><a href="timeFunctions.html">Basic Info</a></li>
+      <li><a href="timeFuncExercise1.html">Exercise 1</a></li>
+      <li><a href="timeFuncExercise2.html">Exercise 2</a></li>
+      <li><a href="timeFuncExercise3.html">Exercise 3</a></li>
+    </ul>
+
+    <script type="text/javascript" src="../tryItYourself.js"></script>
+  </body>
+</html>

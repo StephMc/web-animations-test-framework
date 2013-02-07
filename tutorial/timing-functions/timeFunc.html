@@ -1,0 +1,98 @@
+<!-- 
+Copyright 2013 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="author" title="Sandy Phan, Sarah Heimlich", href="mailto:sandyphan@google.com, sarahheimlich@google.com">
+    <title>Timing Functions</title>
+    <meta name="flags" content="dom">
+    <meta name="tutorial" content="Web Animations tutorials">
+    <link rel="stylesheet" type="text/css" href="../tutorialStyle.css">
+    <script type="text/javascript" src="../jquery.js"></script>
+    <script type="text/javascript" src="../pageLoad.js"></script>
+  </head>
+
+  <body>
+    <ul class="topMenu">
+      <li><a href="../homePage.html">Home</a></li>
+      <li><a href="#">Tutorials</a>
+        <ul class="subMenu">
+          <li><a href="../basicAnimations/basicAnim.html">Basic Animations</a></li>
+          <li><a href="../parallel/parallel.html">Parallel Animations</a></li>
+          <li><a href="../sequence/sequence.html">Sequence Animations</a></li>
+          <li><a href="../timing-dictionary/timeDict.html">Timing Dictionary</a></li>
+          <li><a href="timeFunc.html">Timing Functions</a></li>
+        </ul>
+      </li>
+      <li><a href="../references/references.html">References</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <div id="main">
+
+      <div id="title">Web Animations Tutorial</div>
+      
+      <div class="line-separator"></div>
+
+      <div class="content">
+
+        <p class="description">Web animations is to have a flash or GIF animation intergrated onto the web page. Normal web animations still require the use of plugins such as Java Applets, Shockwave, Adobe Flash. In this tutorial, we will be showing you how to create animations using javascript without the need of installing plugins.</p>
+
+        <br />
+
+        <div class="heading subTitle">Timing Functions</div>
+
+        <p class="description">Timing functions allow time scaling which adds effects such as easing and stepping to animations. To create a basic animation with timing functions, please follow the following interface:</p>
+
+        <code class="codeSamples">new Animation(element, {effects}, {timingFunction: new TimingFunction("ease"), duration: #});
+        <br />
+        new Animation(element, {effects}, {timingFunction: new StepingTimingFunction(1, 'start'), duration: #});</code>
+
+        <p class="description">Easing effects allow animations to have slow start and endings which makes the animations appear to be more smooth. It was defaulted to linear. There are 5 easing effects:</p>
+        <ul class="description">
+          <li><b>linear:</b> animation runs at normal speed with no timing scaling.</li>
+          <li><b>ease:</b> slow start for a quarter of the animation time and reduce speed of animation at quarter of the animation time.</li>
+          <li><b>ease-in:</b> slow start for 2 fifths of the animation time then runs at normal speed.</li>
+          <li><b>ease-out:</b> run at normal speed then ends slowly for the last 2 fifths of total duration of the animation.</li>
+          <li><b>ease-in-out:</b> slow start for 2 fifths of the animation time then runs at normal speed for a short time, then ends slowly for the last 2 fifths of the total duration of the animation.</li>
+        </ul>
+
+        <p class="description">Stepping functions scale the timed item's timing so that the timed item occurs in a series of discete steps. There are 3 stepping effects:</p>
+        <ul class="description">
+          <li><b>start:</b> the change in value occurs at the beginning of the interval.</li>
+          <li><b>middle:</b> the change in value occurs at the midpoint of the interval.</li>
+          <li><b>end:</b> the change in value occurs at the end of the interval.</li>
+        </ul>
+
+        <div class="separator"></div>
+
+      </div>  <!-- content ending div -->
+      <div class="line-separator"></div>
+    </div> <!-- main ending div -->
+
+    <ul class="sideMenu">
+      <li id="menuLabel">Timing Functions</li>
+      <li>Basic Info</li>
+      <li>Exercise 1</li>
+      <li>Exercise 2</li>
+      <li>Exercise 3</li>
+    </ul>
+    
+    <script type="text/javascript" src="../tryItYourself.js"></script>
+  </body>
+</html>
+

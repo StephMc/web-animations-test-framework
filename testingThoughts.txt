@@ -1,0 +1,4 @@
+- There will have to be a section of tests which are only manual which test that the browser can do the things required to make the extra-asserts framework function properly. Those things are curently:
+	- Pausing
+	- 
+- Tests should aim to be atomic so failure in one part of the spec won't cause the basic tests for another spec section to fail

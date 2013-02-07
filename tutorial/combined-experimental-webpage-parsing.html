@@ -1,0 +1,192 @@
+/*
+ * Copyright 2013 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ 
+
+// get default html values
+// var htmlVal;
+// var cssVal;
+// var jsVal
+
+// elements such as animation divs and its associated style
+// is appended into the body of iframe as well as any associating
+// js scripts
+var displayDefault = function() {
+  // htmlVal = document.getElementById('htmlCode').value;
+  // htmlVal = "<div id='test' class='testBox'>"
+  // + "\n" + htmlVal
+  // + "\n" + "<div id='b' class='ref'></div>"
+  // + "\n" + "</div>";
+  // cssVal = document.getElementById('cssCode').value;
+  // cssVal += "\n" + ".ref {"
+  // + "\n" + "background-color: red;"
+  // + "\n" + "opacity:0;"
+  // + "\n" + "border-radius: 10px;"
+  // + "\n" + "width: 100px;"
+  // + "\n" + "height: 50px;"
+  // + "\n" + "top: 0px;"
+  // + "\n" + "left: 0px;"
+  // + "\n" + "position: absolute;"
+  // + "\n" +"}"
+  // + "\n" + ".testBox {"
+  // + "\n" + "height: 50px;"
+  // + "\n" + "}";
+
+  // frames['display'].document.documentElement.getElementsByTagName("body")[0].innerHTML = htmlVal;
+  // //console.log(frames['display'].document);
+  // frames['display'].document.getElementsByTagName('style')[0].innerHTML = cssVal;
+}
+
+// executed when button called update is clicked
+// extract texts from the 3 text areas,
+var update = function() {
+  var iframe = document.querySelector('iframe');
+  //reset the mess
+  var src = iframe.src;
+  iframe.src = src;
+
+  //Grab the source
+  var head = iframe.contentWindow.document.head.innerHTML;
+  var body = iframe.contentWindow.document.body.innerHTML;
+  console.log(head);
+  console.log(body);
+
+  var cssVal = document.getElementById('cssCode').value;
+  var jsVal = document.getElementById('jsCode').value;
+  var htmlVal = document.getElementById('htmlCode').value;
+
+  // Input the css style. Location to place it is at /*CSS*/
+  head = head.split("/*CSS*/");
+  console.log(head);
+  head = head[0] + "\n" + cssVal + "\n" + head[1];
+
+  body = body.split("<!-- HTML -->");
+  console.log(body);
+  body = body[0] + "\n" + htmlVal + "\n" + body[1]; 
+
+  jsVal = jsVal.replace("Animation", "testAnimation");
+  body = body.split("//JS");
+  console.log(body);
+  body = body[0] + "\n" + jsVal + "\n" + body[1];
+
+  body = body.split('<div id="padding"');
+  body = body[0];
+
+  console.log(head);
+  console.log(body);
+
+  var source = head + body;
+
+iframe.src = 'iframe-contents.html';
+iframe.contentWindow.document.open('text/html', 'replace');
+iframe.contentWindow.document.write(source);
+iframe.contentWindow.document.close();
+
+console.log(iframe);
+
+}
+
+////////////////////
+
+<!DOCTYPE html>
+<html>
+  <style>
+  .testBox {
+    height: 50px;
+  }
+  /*CSS*/ 
+  </style>
+
+  <script type="text/javascript" src="../../web-animations-js/web-animation.js"></script>
+  <script type="text/javascript" src="../testharness/testharness.js"></script>
+  <script type="text/javascript" src="../testharness/testharnessreport.js"></script>
+  <script type="text/javascript" src="../extra-asserts.js"></script>
+
+  <div id="test" class="testBox">
+    <!-- HTML -->
+  </div>
+
+  <script>
+  setupTests();
+
+  //JS
+
+  //Checks here
+  check(document.querySelector(".anim"), ["left"], ["0px"], 0);
+  runTests();
+  </script>
+</html>
+
+////////////////////////
+<!-- 
+Copyright 2013 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="author" title="Sandy Phan, Sarah Heimlich", href="mailto:sandyphan@google.com, sarahheimlich@google.com">
+    <title>Web Animations Tutorial</title>
+    <meta name="flags" content="dom">
+    <meta name="tutorial" content="Web Animations tutorials">
+    <link rel="stylesheet" type="text/css" href="tutorialStyle.css">
+  </head>
+
+  <body onload="displayDefault()">
+    <div id="main">
+        <div id="tryIt">
+          <div class="heading">TRY IT YOURSELF
+             <button onclick="update()" id="update">Update</button>
+          </div>
+          <div class="code">
+            <div id="label">HTML Code</div>
+            <textarea id="htmlCode" class="code">
+<div id="a" class="anim"></div>
+            </textarea>
+            <div id="label">CSS Style</div>
+            <textarea id="cssCode" class="code">
+.anim {
+  background-color: red;
+  border-radius: 10px;
+  width: 100px;
+  height: 50px;
+  top: 0px;
+  left: 0px;
+  position: absolute;
+}
+            </textarea>
+            <div id="label">Javascript</div>
+            <textarea id="jsCode" class="code"></textarea>
+          </div>
+          <iframe id="display" src="iframe-contents.html"></iframe>  
+        </div> 
+      </div>  <!-- content ending div -->
+    </div> <!-- main ending div -->
+    <script type="text/javascript" src="tryItYourself.js"></script>
+  </body>
+</html>

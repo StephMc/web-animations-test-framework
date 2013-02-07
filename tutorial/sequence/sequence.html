@@ -1,0 +1,91 @@
+<!-- 
+Copyright 2013 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="author" title="Sandy Phan, Sarah Heimlich", href="mailto:sandyphan@google.com, sarahheimlich@google.com">
+    <title>Sequential Animation</title>
+    <meta name="flags" content="dom">
+    <meta name="tutorial" content="Web Animations tutorials">
+    <link rel="stylesheet" type="text/css" href="../tutorialStyle.css">
+    <script type="text/javascript" src="../jquery.js"></script>
+    <script type="text/javascript" src="../pageLoad.js"></script>
+  </head>
+
+  <body>
+    <ul class="topMenu">
+      <li><a href="../homePage.html">Home</a></li>
+      <li><a href="#">Tutorials</a>
+        <ul class="subMenu">
+          <li><a href="../basicAnimations/basicAnim.html">Basic Animations</a></li>
+          <li><a href="../parallel/parallel.html">Parallel Animations</a></li>
+          <li><a href="sequence.html">Sequence Animations</a></li>
+          <li><a href="../timing-dictionary/timeDict.html">Timing Dictionary</a></li>
+          <li><a href="../timing-functions/timeFunc.html">Timing Functions</a></li>
+        </ul>
+      </li>
+      <li><a href="../references/references.html">References</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <div id="main">
+
+      <div id="title">Web Animations Tutorial</div>
+      
+      <div class="line-separator"></div>
+
+      <div class="content">
+        <p class="description">Web animations is to have a flash or GIF animation intergrated onto the web page. Normal web animations still require the use of plugins such as Java Applets, Shockwave, Adobe Flash. In this tutorial, we will be showing you how to create animations using javascript without the need of installing plugins.</p>
+
+        <br />
+
+        <div class="heading subTitle">Sequential Animation Groups</div>
+
+        <p class="description">We have been through parallel animation groups, it's time for us to do some sequential things. Just as the name suggests, children in a sequential animation group runs sequentially even if they do not have a set delay time. (Though a negative start delay can cause 2 children to overlap).</p>
+
+        <p class="description">The interface for sequential animation group is:</p>
+
+        <code class="codeSamples">new SeqGroup([children], {timing/timing functions});</code>
+
+        <p class="description">You can see that the interfaces are very similar, even the properties of the children and timing are the same as well. That is, both children and timing are nullable but only timing is optional.</p>
+
+        <p class="description note">Note: for sequence groups, you have to always manually set it to play, else it would not play automatically. Hence, the following sample is a more recommended one.</p>
+
+        <code class="codeSamples">
+          var seqGr = new SeqGroup([A, B]);
+          seqGr.play();
+        </code>
+
+        <p class="description">Where A and B are individual animations. play() is a method to let the animation runs. In order to pause the animation, you can use pause().</p>
+
+        <div class="separator"></div>
+
+      </div>  <!-- content ending div -->
+      <div class="line-separator"></div>
+    </div> <!-- main ending div -->
+
+    <ul class="sideMenu">
+      <li id="menuLabel">Sequential Animation Group</li>
+      <li>Basic Info</li>
+      <li>Exercise 1</li>
+      <li>Exercise 2</li>
+      <li>Exercise 3</li>
+    </ul>
+    <script type="text/javascript" src="../tryItYourself.js"></script>
+  </body>
+</html>
+

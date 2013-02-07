@@ -1,0 +1,220 @@
+<!-- 
+Copyright 2013 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="author" title="Sandy Phan, Sarah Heimlich", href="mailto:sandyphan@google.com, sarahheimlich@google.com">
+    <title>Create Basic Animation</title>
+    <meta name="flags" content="dom">
+    <meta name="tutorial" content="Web Animations tutorials">
+    <link rel="stylesheet" type="text/css" href="../tutorialStyle.css">
+  </head>
+
+  <body>
+    <ul class="topMenu">
+      <li><a href="../homePage.html">Home</a></li>
+      <li><a href="#">Tutorials</a>
+        <ul class="subMenu">
+          <li><a href="../basicAnimations/basicAnim.html">Basic Animations</a></li>
+          <li><a href="../parallel/parallel.html">Parallel Animations</a></li>
+          <li><a href="../sequence/sequence.html">Sequence Animations</a></li>
+          <li><a href="../timing-dictionary/timeDict.html">Timing Dictionary</a></li>
+          <li><a href="../timing-functions/timeFunc.html">Timing Functions</a></li>
+        </ul>
+      </li>
+      <li><a href="references.html">References</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+
+    <div id="main">
+
+      <div id="title">Web Animations Tutorial</div>
+
+      <div class="line-separator"></div>
+
+      <div class="content">
+
+        <ul id="alphabet-menu">
+          <li><a href="#a">A</a></li>
+          <li><a href="#b">B</a></li>
+          <li><a href="#c">C</a></li>
+          <li><a href="#d">D</a></li>
+          <li><a href="#e">E</a></li>
+          <li><a href="#f">F</a></li>
+          <li><a href="#g">G</a></li>
+          <li><a href="#h">H</a></li>
+          <li><a href="#i">I</a></li>
+          <li><a href="#j">J</a></li>
+          <li><a href="#k">K</a></li>
+          <li><a href="#l">L</a></li>
+          <li><a href="#m">M</a></li>
+          <li><a href="#n">N</a></li>
+          <li><a href="#o">O</a></li>
+          <li><a href="#p">P</a></li>
+          <li><a href="#q">Q</a></li>
+          <li><a href="#r">R</a></li>
+          <li><a href="#s">S</a></li>
+          <li><a href="#t">T</a></li>
+          <li><a href="#u">U</a></li>
+          <li><a href="#v">V</a></li>
+          <li><a href="#w">W</a></li>
+          <li><a href="#x">X</a></li>
+          <li><a href="#y">Y</a></li>
+          <li><a href="#z">Z</a></li>
+        </ul>
+
+        <br />
+
+        <div id="a" class="alphabet-title">A
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+        <ul class="description">
+          <li><a href="#">animate()</a></li>
+          <li><a href="#">AnimationEffect</a><li>
+        </ul>
+
+        <div id="b" class="alphabet-title">B
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+
+        <div id="c" class="alphabet-title">C
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+        <ul class="description">
+          <li><a href="#">clone</a></li>
+          <li><a href="#">CustomAnimationEffect</a></li>
+        </ul>
+
+        <div id="d" class="alphabet-title">D
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+        <ul class="description">
+          <li><a href="#">defaultPlaybackRate</a></li>
+          <li><a href="#">direction</a></li>
+        </ul>
+
+        <div id="e" class="alphabet-title">E
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+
+        <div id="f" class="alphabet-title">F
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+        <ul class="description">
+          <li><a href="#">fillMode</a></li>
+        </ul>
+
+        <div id="g" class="alphabet-title">G
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+
+        <div id="h" class="alphabet-title">H
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+
+        <div id="i" class="alphabet-title">I
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+        <ul class="description">
+          <li><a href="iterationCount.html">iterationCount</a></li>
+          <li><a href="#">iterationDuration</a></li>
+          <li><a href="iterationStart.html">iterationStart</a></li>
+        </ul>
+
+        <div id="j" class="alphabet-title">J
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+
+        <div id="k" class="alphabet-title">K
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+
+        <div id="l" class="alphabet-title">L
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+        <ul class="description">
+          <li><a href="#">locallyPaused()</a></li>
+        </ul>
+
+        <div id="m" class="alphabet-title">M
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+
+        <div id="n" class="alphabet-title">N
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+        <ul class="description">
+          <li><a href="newAnimation.html">new Animation()</a></li>
+        </ul>
+
+
+        <div id="o" class="alphabet-title">O
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+
+        <div id="p" class="alphabet-title">P
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+        <ul class="description">
+          <li><a href="parGroup.html">ParGroup()</a></li>
+          <li><a href="#">pause()</a></li>
+          <li><a href="#">play()</a></li>
+          <li><a href="#">playbackrate</a></li>
+        </ul>
+
+        <div id="q" class="alphabet-title">Q
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+
+        <div id="r" class="alphabet-title">R
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+
+        <div id="s" class="alphabet-title">S
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+        <ul class="description">
+          <li><a href="seqGroup.html">SeqGroup()</a></li>
+          <li><a href="#">startDelay</a></li>
+          <li><a href="#">startTime</a></li>
+          <li><a href="StepTimingFunction.html">StepTimingFunction</a></li>
+        </ul>
+
+        <div id="t" class="alphabet-title">T
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+        <ul class="description">
+          <li><a href="TimingDictionary.html">TimingDictionary</a></li>
+          <li><a href="#">TimingFunction()</a></li>
+        </ul>
+
+        <div id="u"class="alphabet-title">U
+          <div class="backToTop"><a href="#">Top</a></div>
+        </div>
+        <ul class="description">
+        </ul>
+
+      </div>  <!-- content ending div -->
+
+    <div class="line-separator"></div>
+    </div> <!-- main ending div -->
+
+    <script type="text/javascript" src="../tryItYourself.js"></script>
+  </body>
+</html>
+

@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+
+<solution>
+  <exercise1>
+    <object>document.getElementById('a')</object>
+    <property>{'left': '0px'}</property>
+    <time>0</time>
+    <object>document.getElementById('a')</object>
+    <property>{'left': '300px'}</property>
+    <time>2</time>
+  </exercise1>
+
+  <exercise2>
+    <object>document.getElementById('a')</object>
+    <property>{'top': '0px'}</property>
+    <time>0</time>
+    <object>document.getElementById('a')</object>
+    <property>{'top': '500px'}</property>
+    <time>2</time>
+  </exercise2>
+
+  <exercise3>
+    <object>document.getElementById('a')</object>
+    <property>{'top': '0px'}</property>
+    <time>0</time>
+    <object>document.getElementById('a')</object>
+    <property>{'left': '0px'}</property>
+    <time>0</time>
+    <object>document.getElementById('a')</object>
+    <property>{'top': '500px'}</property>
+    <time>2</time>
+    <object>document.getElementById('a')</object>
+    <property>{'left': '300px'}</property>
+    <time>2</time>
+  </exercise3>
+
+  <exercise4>
+    <object>document.getElementById('a')</object>
+    <property>{'top': '0px'}</property>
+    <time>0</time>
+    <object>document.getElementById('a')</object>
+    <property>{'left': '0px'}</property>
+    <time>0</time>
+    <object>document.getElementById('a')</object>
+    <property>{'left': '400px'}</property>
+    <time>2</time>
+    <object>document.getElementById('a')</object>
+    <property>{'top': '0px'}</property>
+    <time>2</time>
+    <object>document.getElementById('a')</object>
+    <property>{'left': '400px'}</property>
+    <time>4</time>
+    <object>document.getElementById('a')</object>
+    <property>{'top': '200px'}</property>
+    <time>4</time>
+    <object>document.getElementById('a')</object>
+    <property>{'left': '0px'}</property>
+    <time>6</time>
+    <object>document.getElementById('a')</object>
+    <property>{'top': '200px'}</property>
+    <time>6</time>
+    <object>document.getElementById('a')</object>
+    <property>{'left': '0px'}</property>
+    <time>8</time>
+    <object>document.getElementById('a')</object>
+    <property>{'top': '0px'}</property>
+    <time>8</time>
+  </exercise4>
+
+  <exercise5>
+    <object>document.getElementById('a')</object>
+    <property>{'background-color': 'red'}</property>
+    <time>0</time>
+    <object>document.getElementById('a')</object>
+    <property>{'background-color': 'green'}</property>
+    <time>2.5</time>
+    <object>document.getElementById('a')</object>
+    <property>{'background-color': 'lightsteelblue'}</property>
+    <time>5</time>
+    <object>document.getElementById('a')</object>
+    <property>{'background-color': 'green'}</property>
+    <time>7.5</time>
+    <object>document.getElementById('a')</object>
+    <property>{'background-color': 'red'}</property>
+    <time>10</time>
+  </exercise5>
+</solution>

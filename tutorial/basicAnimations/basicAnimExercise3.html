@@ -1,0 +1,91 @@
+<!-- 
+Copyright 2013 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <link rel="author" title="Sandy Phan, Sarah Heimlich", href="mailto:sandyphan@google.com, sarahheimlich@google.com">
+    <title>Basic Animation Exercise 3</title>
+    <meta name="flags" content="dom">
+    <meta name="tutorial" content="Web Animations tutorials">
+    <link rel="stylesheet" type="text/css" href="../tutorialStyle.css">
+  </head>
+
+  <body  onload="displayDefault()">
+    <ul class="topMenu">
+      <li><a href="../homePage.html">Home</a></li>
+      <li><a href="#">Tutorials</a>
+        <ul class="subMenu">
+          <li><a href="basicAnimations/createBasicAnim.html">Basic Animations</a></li>
+          <li><a href="../parallel/parallel.html">Parallel Animations</a></li>
+          <li><a href="../sequence/sequence.html">Sequence Animations</a></li>
+          <li><a href="../timing-dictionary/timingDict.html">Timing Dictionary</a></li>
+          <li><a href="../timing-functions/timeFunctions.html">Timing Functions</a></li>
+        </ul>
+      </li>
+      <li><a href="../references/references.html">References</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <div id="main">
+
+      <div id="title">Web Animations Tutorial</div>
+
+      <div class="line-separator"></div>
+
+      <div class="content">
+
+        <div class="heading subTitle">Create a new basic animation</div>
+
+        <div class="heading exercises">Exercise 3 - Moving Diagonally</div>
+        <p class="description">Now you know how to move right and down, lets try to combine the 2 to see what will happen.</p>
+
+        <p class="description">Put both codes in the previous exercise into the editor to see what happens. The animation was move 300px from left for exercise 1 and move 500px from top for exercise 2. (Try to type in the codes before going back to the exercise for the codes.</p>
+
+        <br />
+
+        <div id="hideLabel" onclick="toggleSolution()">Show Solution</div>
+        <div id="toggleText" class="codeSamples">
+          <code>new Animation(document.querySelector("#a"), {left: "300px"}, 2);
+            <br />
+            new Animation(document.querySelector("#a"), {top: "500px"}, 2);</code>
+        </div>
+
+        <div id="tryIt"></div>
+
+      </div>  <!-- content ending div -->
+
+      <div class="separator"></div>
+      <div class="line-separator"></div>
+      <div></div>
+    </div> <!-- main ending div -->
+
+    <div class="separator"></div>
+
+    <ul class="sideMenu">
+      <li id="menuLabel">Create Basic Animation</li>
+      <li><a href="createBasicAnim.html">Basic Info</a></li>
+      <li><a href="basicAnimExercise1.html">Exercise 1</a></li>
+      <li><a href="basicAnimExercise2.html">Exercise 2</a></li>
+      <li><a href="basicAnimExercise3.html">Exercise 3</a></li>
+      <li><a href="basicAnimExercise4.html">Exercise 4</a></li>
+      <li><a href="basicAnimExercise5.html">Exercise 5</a></li>
+    </ul>
+
+    <script type="text/javascript" src="../tryItYourself.js"></script>
+  </body>
+</html>

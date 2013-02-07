@@ -1,0 +1,132 @@
+<!-- 
+Copyright 2013 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="author" title="Sandy Phan, Sarah Heimlich", href="mailto:sandyphan@google.com, sarahheimlich@google.com">
+    <title>Timing Dictionary</title>
+    <meta name="flags" content="dom">
+    <meta name="tutorial" content="Web Animations tutorials">
+    <link rel="stylesheet" type="text/css" href="../tutorialStyle.css">
+    <script type="text/javascript" src="../jquery.js"></script>
+    <script type="text/javascript" src="../pageLoad.js"></script>
+  </head>
+
+  <body onload="update()">
+    <ul class="topMenu">
+      <li><a href="../homePage.html">Home</a></li>
+      <li><a href="#">Tutorials</a>
+        <ul class="subMenu">
+          <li><a href="../basicAnimations/basicAnim.html">Basic Animations</a></li>
+          <li><a href="../parallel/parallel.html">Parallel Animations</a></li>
+          <li><a href="../sequence/sequence.html">Sequence Animations</a></li>
+          <li><a href="timeDict.html">Timing Dictionary</a></li>
+          <li><a href="../timing-functions/timeFunc.html">Timing Functions</a></li>
+        </ul>
+      </li>
+      <li><a href="../references/references.html">References</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <div id="main">
+
+      <div id="title">Web Animations Tutorial</div>
+      
+      <div class="line-separator"></div>
+
+      <div class="content">
+        <p class="description">Web animations is to have a flash or GIF animation intergrated onto the web page. Normal web animations still require the use of plugins such as Java Applets, Shockwave, Adobe Flash. In this tutorial, we will be showing you how to create animations using javascript without the need of installing plugins.</p>
+
+        <br />
+
+        <div class="heading subTitle">Adding Timing Dictionary</div>
+
+        <p class="description">Timing Dictionary is basically a set of timing properties being put together and apply for an animaton. Timing dictionary allows the grouping of all timing properties together to avoid rewrite of many lines of codes. There are a total of 9 memebers that can be included in a timing dictionary:</p>
+
+        <p class="description">Note that when using the above properties, the duration of the animation will have to be defined under 'duration'. Also, properties with a type of 'double' as input should have a value greater than or equals to 0. A negative value would cause "Exception Errors".
+        <p class="description">The animation interface should be as follow when using timing dictionary:</p>
+
+        <code class="codeSamples">new Animation(element, {effect}, {timing properties, duration: #});</code>
+
+        <ul class="description">
+          <li><b>startTime</b></li>
+            <ul>
+              <li>Defines the start time of the animation. Defaulting to 'null'.</li>
+              <li>Value should be in double.</li>
+            </ul>
+          <li><b>startDelay</b></li>
+            <ul>
+              <li>Defines the number of seconds to wait before starting an animation.</li>
+              <li>Value should be in double.</li>
+            </ul>            
+          <li><b>fillMode</b></li>
+            <ul>
+              <li>Defines the existence of effects outside of the active interval (i.e. the actual animation time) as outside of the active interval, a timed item may still have an effect.</li>
+              <li>There are 4 modes: none, forwards, backwards, both.</li>
+            </ul>
+          <li><b>iterationStart</b></li>
+            <ul>
+              <li>Defines the number of iterations into the timed item at which to begin.</li>
+              <li>For instance, a value of 0.5 woule cause the timed item to begin half-way through the first iteration.</li>
+            </ul>
+          <li><b>interationCount</b></li>
+            <ul>
+              <li>Defines the number of times to repeat an item. Defaulting to 1.0.</li>
+              <li>Value should be in double.</li>
+            </ul>
+          <li><b>iterationDuration</b></li>
+            <ul>
+              <li>Defines the duration of a single iteration. Defaulting to 'null'.</li>
+              <li>Value should be in double.</li>
+            </ul>
+          <li><b>defaultPlaybackRate</b></li>
+            <ul>
+              <li>A double number which multiplies to the inherited time potentially which causes the item to run at a different rate to its natural speed. Defaulting to 1.0.</li>
+              <li>Value should be in double.</li>
+            </ul>            
+          <li><b>direction</b></li>
+            <ul>
+              <li>Defines the direction in which the animation proceeds. Defaulting to 'normal'.</li>
+              <li>It has 4 directions: 'normal', 'reverse', 'alternate', 'reverse-alternate'.</li>
+            </ul> 
+          <li><b>timingFunction</b></li>
+            <ul>
+              <li>Defines the scaling of time to produce easing effects. Defaulting to 'null'. Further explaination in Timing Functions section.</li>
+            </ul>
+        </ul>
+
+      </div>  <!-- content ending div -->
+
+      <div class="line-separator"></div>
+      <div class="separator"></div>
+    </div> <!-- main ending div -->
+
+    <ul class="sideMenu">
+      <li id="menuLabel">Timing Dictionary</li>
+      <li>Basic Info</li>
+      <li>Exercise 1</li>
+      <li>Exercise 2</li>
+      <li>Exercise 3</li>
+      <li>Exercise 4</li>
+      <li>Exercise 5</li>
+      <li>Exercise 6</li>
+    </ul>
+
+    <script type="text/javascript" src="../tryItYourself.js"></script>
+  </body>
+</html>
+

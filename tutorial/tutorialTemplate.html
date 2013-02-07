@@ -1,0 +1,150 @@
+<!-- 
+Copyright 2013 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="author" title="Sandy Phan, Sarah Heimlich", href="mailto:sandyphan@google.com, sarahheimlich@google.com">
+    <title>Tutorial Template</title>
+    <meta name="flags" content="dom">
+    <meta name="tutorial" content="Web Animations tutorials">
+    <link rel="stylesheet" type="text/css" href="tutorialStyle.css">
+  </head>
+
+  <body  onload="displayDefault()">
+    <ul>
+      <a href="homePage.html"><li class="topMenu">Home</li></a>
+      <a href="#"><li class="topMenu">Tutorials</li></a>
+      <a href="#"><li class="topMenu">About</li></a>
+    </ul>
+    <div id="main">
+
+      <div id="title">Name of Website</div>
+      
+      <div class="line-separator"></div>
+
+      <div class="content">
+        <p class="description">About the Title. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+        <br />
+
+        <div class="heading subTitle">Subtitle, the topic for the tutorial</div>
+
+        <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+        <code class="codeSamples">some code sample here</code>
+
+        <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+        <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+        <div class="heading exercises">Some Exercise</div>
+
+        <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+        <code class="codeSamples">some code here for exercise</code>
+
+        <div id="hideLabel" onclick="toggleSolution()">Show Solution</div>
+        <div id="toggleText" class="codeSamples"><code>some solution</code></div>
+
+        <ol class="description">
+          <li>Some explaination to the solution</li>
+          <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit</li>
+          <li>sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+          <li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
+        </ol>
+
+        <button onclick="showEditor()">Try It Yourself</button>
+
+        <div></div>
+
+        <div class="heading exercises">Some other exercise</div>
+        <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <br />
+
+<!--         <div id="hideLabel" onclick="toggleSolution()">Show Solution</div>
+        <div id="toggleText"><code>new Animation(document.querySelector("#a"), {left: "300px"}, 2);</code></div> -->
+
+<!--         <div id="tryIt">
+          <div class="heading">TRY IT YOURSELF
+            <button onclick="update()" id="update">Update</button>
+          </div>
+          <div class="code">
+            <div id="label">HTML Code</div>
+            <textarea id="htmlCode" class="code">
+<html>
+  <head>
+  </head>
+  <body>
+    <div id="a" class="test"></div>
+  </body>
+</html></textarea>
+            <div id="label">CSS Style</div>
+            <textarea id="cssCode" class="code">
+.test {
+  background-color: red;
+  border-radius: 10px;
+  width: 100px;
+  height: 50px;
+  top: 0px;
+  left: 0px;
+  position: absolute;
+}</textarea>
+            <div id="label">Javascript</div>
+            <textarea id="jsCode" class="code"></textarea>
+          </div>
+          
+          <iframe id="display"></iframe>
+        </div> -->
+
+        <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+        <div class="separator"></div>
+
+      </div>  <!-- content ending div -->
+    </div> <!-- main ending div -->
+
+    <div id="tryIt">
+      <div class="heading">TRY IT YOURSELF
+         <button onclick="update()" id="update">Update</button>
+      </div>
+      <div class="code">
+        <div id="label">HTML Code</div>
+        <textarea id="htmlCode">
+<div id="a" class="test"></div>
+</textarea>
+        <div id="label">CSS Style</div>
+        <textarea id="cssCode">
+.test {
+background-color: red;
+border-radius: 10px;
+width: 100px;
+height: 50px;
+top: 0px;
+left: 0px;
+position: absolute;
+}</textarea>
+        <div id="label">Javascript</div>
+        <textarea id="jsCode"></textarea>
+      </div>
+      
+      <iframe id="display" src='iframe-contents.html'><p>Your browser does not support iframes</p></iframe>  
+    </div> 
+    <script type="text/javascript" src="tryItYourself.js"></script>
+  </body>
+</html>
+

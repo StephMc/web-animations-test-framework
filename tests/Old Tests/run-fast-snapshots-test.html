@@ -1,0 +1,194 @@
+<!-- 
+Copyright 2013 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<!DOCTYPE html>
+<title>Test flashing boxes</title>
+<link rel="author" title="Sandy Phan"m href="mailto:sandyphan@google.com")>
+<meta name="flags" content="dom">
+
+<style>
+  body {
+    width: 100%;
+  }
+  .test {
+    width: 100px;
+    height: 50px;
+    top: 0px;
+    left: 0px;
+    background-color: #AFA;
+    position: relative;
+  }
+  .rows {
+    position: relative;
+  }
+  .expected {
+    background-color: red;
+    width: 100px;
+    height: 50px;
+    float: left;
+    opacity: 0;
+    position: absolute;
+    top: 0px;
+  }
+</style>
+
+<p>A test that take snap shots of the animation and generate another animation with boxes that flashes up</p>
+
+<div class="rows">
+  <div id="a" class="test"></div>
+</div>
+<div class="rows">
+  <div id="b" class="test"></div>
+</div>
+<div class="rows">
+  <div id="c" class="test"></div>
+</div>
+<div class="rows">
+  <div id="d" class="test"></div>
+</div>
+<div class="rows">
+  <div id="e" class="test"></div>
+</div>
+<div class="rows">
+  <div id="f" class="test"></div>
+</div>
+<div class="rows">
+  <div id="g" class="test"></div>
+</div>
+<div class="rows">
+  <div id="h" class="test"></div>
+</div>
+<div class="rows">
+  <div id="i" class="test"></div>
+</div>
+<div class="rows">
+  <div id="j" class="test"></div>
+</div>
+
+
+<script src="../../web-animations-js/web-animation.js"></script>
+<script src="../testharness/testharness.js"></script>
+<script src='../testharness/testharnessreport.js'></script>
+<script src='../extra-asserts.js'></script>
+<link rel='stylesheet' href='../testharness/testharness.css'>
+<link rel='stylesheet' type="text/css" href="../animation-test-style.css">
+
+<script>
+
+/*
+ * all animation scripts start here
+ *
+ */
+
+setup({timeout: 100000});
+
+var elems = document.querySelectorAll('.test');
+var anims = [];
+
+for (var i = 0; i < elems.length; i++) {
+<<<<<<< HEAD
+  anims[i] = new Animation(elems[i], {left: Math.round(Math.random() * 700) + 'px'}, Math.round(Math.random() * 5) + 1);
+=======
+  anims[i] = new Animation(elems[i], {left: Math.round(Math.random() * 700) + 'px'}, 5.0);
+>>>>>>> 86d355b2e9e4c0f4552dcb7aff170e4d81e20b8c
+}
+
+//var animA = new Animation(document.querySelector("#a"), {left: "500px"}, {duration: 5.0,});
+//var animB = new Animation(document.querySelector("#b"), {left: "500px"}, {duration: 5.0,});
+//var animC = new Animation(document.querySelector("#c"), {left: "500px"}, {duration: 5.0,});
+
+
+/* 
+ * all testing scripts start here
+ */
+
+function test_automated(anim, n, interval) {
+  // declare variables
+  var j = 0;
+  var target = parseInt(anim.animationFunction.frames.frames[1].value);
+  var object = document.getElementsByClassName('test')[n];
+  var comp = object.currentStyle || getComputedStyle(object, null);
+  var start = parseFloat(comp.left)
+  target = target - start;
+  var vals = [];
+  var flashed = [];
+  flashed[n] = 0;
+  
+  // store expected distance location values
+  for (var i = 1; i <= interval; i++) {
+    vals[i-1] = (target / (interval + 0.0)) * i;
+  }  
+  
+  var auto = setInterval(flashing, (anim.duration * 1000) / interval);
+  
+  
+  var auto = setInterval(flashing, (anim.duration * 1000) / interval);
+  
+  // create divs at appropriate locations and flash the divs
+  function flashing() {
+<<<<<<< HEAD
+    var left = parseFloat(comp.left);
+    var moved = left - start;
+    assert_approx_equals(moved, vals[j], 3, "Checks that the position are relatively equals");
+=======
+    var left = parseInt(comp.left);
+    assert_approx_equals(left, vals[j], 5, "Checks that the position are relatively equals");
+>>>>>>> 86d355b2e9e4c0f4552dcb7aff170e4d81e20b8c
+    
+    var _newDiv = document.createElement('div');
+    _newDiv.className = 'expected';
+    _newDiv.className += " rows" + n;
+    _newDiv.style.left = left + 'px';
+    document.getElementsByClassName('rows')[n].appendChild(_newDiv);
+  
+    var expElems = document.querySelectorAll(".rows" + n);
+    expElems[j].style.opacity = 1;
+    flashed[n]++;
+  
+    setTimeout(function() {
+      expElems[j].style.opacity = 0;
+      j++;
+    }, 40);
+  }
+<<<<<<< HEAD
+
+=======
+  
+>>>>>>> 86d355b2e9e4c0f4552dcb7aff170e4d81e20b8c
+  var myTest = async_test("Verify that flash boxes appears as the animation " + (n + 1) + " move");
+  setTimeout(function() {
+    clearInterval(auto);
+    myTest.step(function() {
+      assert_equals(flashed[n], interval, "The flash boxes have flashed the correct number of times");
+    });
+    myTest.done();
+<<<<<<< HEAD
+  }, (anim.duration * 1000) + 100);
+}
+
+for (var i = 0; i < anims.length; i++) {
+  test_automated(anims[i], i, Math.round((Math.random() * 5) + 1));
+=======
+  }, 5100);
+}
+
+for (var i = 0; i < anims.length; i++) {
+  test_automated(anims[i], i, Math.round((Math.random() * 10) + 1));
+>>>>>>> 86d355b2e9e4c0f4552dcb7aff170e4d81e20b8c
+}
+</script>
+
+<div id="log"></div>

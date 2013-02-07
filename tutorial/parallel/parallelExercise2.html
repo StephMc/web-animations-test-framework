@@ -1,0 +1,100 @@
+<!-- 
+Copyright 2013 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <link rel="author" title="Sandy Phan, Sarah Heimlich", href="mailto:sandyphan@google.com, sarahheimlich@google.com">
+    <title>Parallel Animation Group Exercise 2</title>
+    <meta name="flags" content="dom">
+    <meta name="tutorial" content="Web Animations tutorials">
+    <link rel="stylesheet" type="text/css" href="../tutorialStyle.css">
+  </head>
+
+  <body  onload="displayDefault()">
+    <ul class="topMenu">
+      <li><a href="../homePage.html">Home</a></li>
+      <li><a href="#">Tutorials</a>
+        <ul class="subMenu">
+          <li><a href="../basicAnimations/createBasicAnim.html">Basic Animations</a></li>
+          <li><a href="parallel/parallel.html">Parallel Animations</a></li>
+          <li><a href="../sequence/sequence.html">Sequence Animations</a></li>
+          <li><a href="../timing-dictionary/timingDict.html">Timing Dictionary</a></li>
+          <li><a href="../timing-functions/timeFunctions.html">Timing Functions</a></li>
+        </ul>
+      </li>
+      <li><a href="../references/references.html">References</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+      
+    <div id="main">
+
+      <div id="title">Web Animations Tutorial</div>
+
+      <div class="line-separator"></div>
+
+      <div class="content">
+
+      	<div class="heading subTitle">Parallel Animation Group</div>
+
+        <div class="heading exercises">Exercise 2 - Parent in Children</div>
+
+        <p class="description">Beside including children into the the parallel group, there is another way to have children running parent's timing properties.</p>
+
+        <p class="description">Firstly, you create a parallel group with no children in it (as child property is nullable) and only add the timing properties you need into the group. Then for each children you make, you add the parent into the child instead of timing properties:</p>
+
+        <code class="codeSamples">var group = new ParGroup([], {duration: 2, iterationCount: 2}); <br />
+                                  new Animation(document.querySelector("#a"), {left: "100px"}, 2, group);
+        </code>
+
+        <p class="description">OR</p>
+
+        <code class="codeSamples">new Animation(document.querySelector("#a"), {left: "100px"}, 2, new ParGroup([], {iterationCount: 2}));</code>
+
+        <p class="description">For this exercise, make an animation that moves down 500px from top and changes colour from red to green then back to red in 5 seconds using parallel groups and iterates for 2 times.</p>
+
+        <div id="hideLabel" onclick="toggleSolution()">Show Solution</div>
+        <div id="toggleText" class="codeSamples">
+          <code>new group = new ParGroup([], {duration: 5, iterationCount: 2}); <br />
+                new Animation(document.querySelector("#a"), {top: "500px"}, 5, group); <br />
+                new Animation(document.querySelector("#a"), {"background-color": ["red", "green", "red"]}, 5.0, group);
+          </code>
+        </div>
+
+        <div id="tryIt"></div>
+
+        <div class="separator"></div>
+
+      </div>  <!-- content ending div -->
+
+      <div class="line-separator"></div>
+
+      <div class="separator"></div>
+    </div> <!-- main ending div -->
+
+    <ul class="sideMenu">
+      <li id="menuLabel">Parallel Animation Group</li>
+      <li><a href="parallel.html">Basic Info</a></li>
+      <li><a href="parallelExercise1.html">Exercise 1</a></li>
+      <li><a href="parallelExercise2.html">Exercise 2</a></li>
+      <li><a href="parallelExercise3.html">Exercise 3</a></li>
+    </ul>
+
+    <script type="text/javascript" src="../tryItYourself.js"></script>
+  </body>
+</html>

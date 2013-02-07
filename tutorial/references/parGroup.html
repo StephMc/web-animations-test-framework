@@ -1,0 +1,121 @@
+<!-- 
+Copyright 2013 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="author" title="Sandy Phan, Sarah Heimlich", href="mailto:sandyphan@google.com, sarahheimlich@google.com">
+    <title>ParGroup()</title>
+    <meta name="flags" content="dom">
+    <meta name="tutorial" content="Web Animations tutorials">
+    <link rel="stylesheet" type="text/css" href="../tutorialStyle.css">
+  </head>
+
+  <body>
+    <ul class="topMenu">
+      <li><a href="../homePage.html">Home</a></li>
+      <li><a href="#">Tutorials</a>
+        <ul class="subMenu">
+          <li><a href="../basicAnimations/basicAnim.html">Basic Animations</a></li>
+          <li><a href="../parallel/parallel.html">Parallel Animations</a></li>
+          <li><a href="../sequence/sequence.html">Sequence Animations</a></li>
+          <li><a href="../timing-dictionary/timeDict.html">Timing Dictionary</a></li>
+          <li><a href="../timing-functions/timeFunc.html">Timing Functions</a></li>
+        </ul>
+      </li>
+      <li><a href="references.html">References</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+
+    <div id="main">
+
+      <div id="title">Web Animations Tutorial</div>
+
+      <div class="line-separator"></div>
+
+      <div class="content">
+
+        <div class="heading subTitle">ParGroup()</div>
+
+        <p class="description"><span class="keywords">ParGroup()</span> is used in grouping animations into a parallel group such that the children inside the group share common timing properties/timing functions.</p>
+
+        <p class='description'><span class="keywords">ParGroup()</span> has the following interface with the following properties:</p>
+
+        <code class="codeSamples">new ParGroup([children, timing]);</code>
+
+        <ol class="description">
+
+        <table class="properties-table">
+          <tr class="properties-table-title">
+            <td>Parameter</td>
+            <td>Type</td>
+            <td>Nullable</td>
+            <td>Optional</td>
+            <td>Description</td>
+          </tr>
+          <tr>
+            <td class="keywords">children</td>
+            <td class="datatype">sequence of timed items</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>A sequence/list of timed items to add as children of this group.
+            </td>
+          </tr>
+          <tr>
+            <td class="keywords">timing</td>
+            <td class="datatype">double or TimingDictionary</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>The timing properties of the sequence group
+              <br />
+              <ul>
+                <li>If parameter is a <span class="datatype">double</span>:
+                  <ul style="list-style-type: none;">
+                    <li>create a new timing dictionary object with all properties set to their default values.</li>
+                    <li><span class="keywords">iterationDuration</span> is set to the input double value.</li>
+                  </ul>
+                </li>
+              </ul>
+              <br />
+              <ul>
+                <li>If parameter is a <span class="datatype">TimingDictionary</span>:
+                  <ul style="list-style-type: none;">
+                    <li>Then <span class="keywords">timing dictionary</span> is set to the input timing.</li>
+                  </ul>
+                </li>
+              </ul>
+              <br />
+              <ul>
+                <li>If parameter is a <span class="datatype">nul</span>:
+                  <ul style="list-style-type: none;">
+                    <li>create a new timing dictionary object with all properties set to their default values.</li>
+                  </ul>
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </table>
+
+      </div>  <!-- content ending div -->
+
+    <div class="line-separator"></div>
+    </div> <!-- main ending div -->
+
+    <script type="text/javascript" src="../tryItYourself.js"></script>
+  </body>
+</html>
+
