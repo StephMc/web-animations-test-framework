@@ -102,5 +102,15 @@ for(var i = 0; i < divs.length; i++) {
 	check(divs[i], {left: "200px"}, 2, "The " + i + "th div end position.");
 }
 
+check(document.querySelector("#a"), {left: "50px"}, 0.9, "Check the top div hasn't moved before 1 second");
+check(document.querySelector("#b"), {left: "50px"}, 0.9, "Check the second to top div hasn't moved before 1 second");
+check(document.querySelector("#c"), {left: "150px"}, 1, "Check the third to top div's middle position");
+check(document.querySelector("#d"), {left: "125px"}, 1, "Check the forth to top div's middle position");
+check(document.querySelector("#e"), {left: "150px"}, 1, "Check the fifth to top div's middle position");
+check(document.querySelector("#f"), {left: "125px"}, 1, "Check the sixth to top div's middle position");
+check(document.querySelector("#g"), {left: "400px"}, 0.5, "Check the bottom div's quarter position");
+check(document.querySelector("#g"), {left: "300px"}, 1, "Check the bottom div's half-way position");
+check(document.querySelector("#g"), {left: "400px"}, 1.5, "Check the bottom div's 3 quarter position");
+
 runTests();
 </script>

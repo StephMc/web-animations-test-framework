@@ -17,27 +17,27 @@ limitations under the License.
 <!DOCTYPE html>
 <style>
 .anim {
-	left: 0px;
-	width: 100px;
-	height: 100px;
-	background-color: lightsteelblue;
-	position: absolute;
+  left: 0px;
+  width: 100px;
+  height: 100px;
+  background-color: lightsteelblue;
+  position: absolute;
 }
 
 #a {
-	top: 0px
+  top: 0px
 }
 
 #b {
-	top: 100px;
+  top: 100px;
 }
 
 #c {
-	top: 200px;
+  top: 200px;
 }
 
 #d {
-	top: 300px;
+  top: 300px;
 }
 
 #expectation {
@@ -48,22 +48,34 @@ limitations under the License.
   height: 400px;
   background: red;
 }
+
+.testBox {
+  height: 400px;
+}
 </style>
 
-<div id=expectation></div>
+<div id="expectation"></div>
+<div id="test" class ="testBox">
+  <div>
+    <div id="a" class="anim a"></div>
+    <div id="b" class="anim b"></div>
+  </div>
 
-<div>
-	<div id="a" class="anim a"></div>
-	<div id="b" class="anim b"></div>
+  <div id="fromTemplate">
+    <div id="c" class="anim a"></div>
+    <div id="d" class="anim b"></div>
+  </div>
 </div>
 
-<div id="fromTemplate">
-	<div id="c" class="anim a"></div>
-	<div id="d" class="anim b"></div>
-</div>
+<script src="../../web-animations-js/web-animation.js"></script>
+<script src="../testharness/testharness.js"></script>
+<script src='../testharness/testharnessreport.js'></script>
+<script src='../extra-asserts.js'></script>
+<link rel='stylesheet' href='../testharness/testharness.css'>
+<link rel='stylesheet' type="text/css" href="../animation-test-style.css">
 
-<script src="web-animation.js"></script>
 <script>
+setupTests();
 
 var a1 = new Animation(document.querySelector("#a"), {left: ["100px", "200px"]}, 0.6);
 var a2 = new Animation(document.querySelector("#b"), {left: ["100px", "200px"]}, 0.5);
@@ -74,7 +86,11 @@ var pgroup2 = new ParGroup([a3, a4], {name: "p2"});
 var sgroup = new SeqGroup([pgroup1, pgroup2], {name: "s"});
 
 window.setTimeout(function() {
-	sgroup.timing.playbackRate = 2;
-	sgroup.play();
+  sgroup.timing.playbackRate = 2;
+  sgroup.play();
 }, 2000);
+
+check(document.querySelector("#a"), {left: "200px"}, 0.3, "Top element end position.");
+
+runTests();
 </script>
