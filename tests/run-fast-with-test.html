@@ -62,9 +62,12 @@ new Animation(document.querySelector(".anim"), {left: "600px"}, {duration: 4});
 new Animation(document.querySelectorAll(".anim")[1], {top: "200px"}, {duration: 2});
 new Animation(document.querySelectorAll(".anim")[2], {top: "200px", left:"600px"}, {duration: 4});
 
-check(document.querySelectorAll('.anim')[0],{top:'0px'},0);
-check(document.querySelectorAll('.anim')[1],{top:'200px'},0);
-check(document.querySelectorAll('.anim')[2],{top:'200px'},0);
+check(document.querySelectorAll('.anim')[0],{top:'0px'},4);
+check(document.querySelectorAll('.anim')[1],{top:'200px'},4);
+check(document.querySelectorAll('.anim')[2],{top:'200px'},4);
+check(document.querySelectorAll('.anim')[0],{top:'0px'},0.9002639999380335);
+check(document.querySelectorAll('.anim')[1],{top:'90.02639770507813px'},0.9002639999380335);
+check(document.querySelectorAll('.anim')[2],{top:'45.01319885253906px'},0.9002639999380335);
 
 runTests();
 </script>

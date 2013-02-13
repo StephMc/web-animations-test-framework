@@ -40,6 +40,9 @@ body{
 <div id = "checks"></div>
 
 <script>
+var parentAnimation;
+var time = 0;
+
 function ToCheck(object, initSelctor, properties){
   this.object = object;
   this.initSelctor = initSelctor;
@@ -55,8 +58,9 @@ function getSettings(){
   var interval = Number(document.getElementById("interval").value);
   var obProp = document.getElementById("obProp").value;
   var checkStack = process(obProp);
-  console.log(checkStack);
-  generate(interval, checkStack);
+  parentAnimation = window.frame.parentAnimation;
+  parentAnimation.currentTime = 0;
+  window.webkitRequestAnimationFrame(generate(interval, checkStack));
 }
 
 function process(rawString){
@@ -79,7 +83,7 @@ function process(rawString){
 
 function generate(interval, checks){
   // Produce checks at this time
-  var time = 0;
+  var time = parentAnimation.iterationTime;
   for (var x in checks){
     for(var i = 0; i < checks[x].object.length; i++){
       console.log(checks[x].object[i]);
@@ -97,9 +101,12 @@ function generate(interval, checks){
     }
   }
   // Move the animations to the next point in time
+  parentAnimation.currentTime += interval;
 
   // Schedule this function to be called on the next frame refresh
-
+  if(parentAnimation.iterationTime < parentAnimation.animationDuration){
+    window.webkitRequestAnimationFrame(generate(interval, checks));
+  }
 }
 
 function printCheck(object, number, properties, time){

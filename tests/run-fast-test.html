@@ -51,10 +51,20 @@ Written by Steph McArthur
 <script src="../../web-animations-js/web-animation.js"></script>
 
 <script>
-
+var parentAnimation;
 new Animation(document.querySelector(".anim"), {left: "600px"}, {duration: 4});
 new Animation(document.querySelectorAll(".anim")[1], {top: "200px"}, {duration: 2});
 new Animation(document.querySelectorAll(".anim")[2], {top: "200px", left:"600px"}, {duration: 4});
+reparent();
+// Put all the animations into a par group to get around global pause issue.
+function reparent(){
+  var childList = [];
+  for (var i = 0; i < document.animationTimeline.children.length; i++) {
+    childList.push(document.animationTimeline.children[i]);
+  }
+  parentAnimation = new ParGroup(childList);
+}
+window.parentAnimation = parentAnimation;
 </script>
 
 
