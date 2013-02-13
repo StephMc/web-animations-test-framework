@@ -178,10 +178,8 @@ function runTests(){
   if (testPacket.length == 0) reparent();
   animTimeViewer();
   sortTests();
-  if (state == "Manual"){
-    // This causes no tests to start until 1 frame is rendered.
-    testRunner();
-  } else {
+  if (state == "Manual") testRunner();
+  else {
     parentAnimation.pause();
     autoTestRunner();
   }

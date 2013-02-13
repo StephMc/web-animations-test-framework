@@ -42,7 +42,7 @@ body{
 <script>
 function ToCheck(object, initSelctor, properties){
   this.object = object;
-  this.object = initSelctor;
+  this.initSelctor = initSelctor;
   this.properties = properties;
 }
 
@@ -78,23 +78,34 @@ function process(rawString){
 }
 
 function generate(interval, checks){
-
-}
-
-function produceChecks(checks){
+  // Produce checks at this time
+  var time = 0;
   for (var x in checks){
-    if(checks[x].object.length > 1){
-
-    } else {
-
+    for(var i = 0; i < checks[x].object.length; i++){
+      console.log(checks[x].object[i]);
+      var props = checks[x].object[i].currentStyle ||
+          getComputedStyle(checks[x].object[i], null);
+      console.log(props["width"]);
+      var propsPrint = "{";
+      for(var j in checks[x].properties){
+        var p = checks[x].properties[j];
+        propsPrint += p + ":'" + props[p] + "'";
+        if (j < checks[x].properties.length -1) propsPrint += ",";
+      }
+      propsPrint += "}";
+      printCheck(checks[x].initSelctor, i, propsPrint, time);
     }
   }
+  // Move the animations to the next point in time
+
+  // Schedule this function to be called on the next frame refresh
+
 }
 
-function printCheck(object, properties, time, testName){
-  var newCheck = "check(" + object + "," + properties + "," + time +
-      "," + testName + ");";
+function printCheck(object, number, properties, time){
+  var newCheck = "check(document.querySelectorAll('" + object + "')[" + number +
+      "]," + properties + "," + time + ");";
   var ouput = document.getElementById("checks");
-  ouput.innerHTML += newCheck;
+  ouput.innerHTML += newCheck + "<br>";
 }
 </script>

@@ -1,4 +1,4 @@
-<!-- 
+<!--
 Copyright 2013 Google Inc. All Rights Reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -62,12 +62,10 @@ new Animation(document.querySelector(".anim"), {left: "600px"}, {duration: 4});
 new Animation(document.querySelectorAll(".anim")[1], {top: "200px"}, {duration: 2});
 new Animation(document.querySelectorAll(".anim")[2], {top: "200px", left:"600px"}, {duration: 4});
 
-check(document.querySelectorAll(".anim")[0], {left:"300px"}, 1, "300px at 3 secs");
-// check(document.querySelector(".anim"), {"left":"600px"}, 2, "moved the right rate");
-// check(document.querySelectorAll(".anim")[1], {"top":"200px"}, 2, "moved the right amount gfdghhgfd");
-// check(document.querySelectorAll(".anim")[1], {"top":"100px"}, 1, "moved the right amount gfdgggg");
-// check(document.querySelectorAll(".anim")[2], {"top":"100px"}, 1, "moved the right amount ffggg");
-// check(document.querySelectorAll(".anim")[2], {"left":"400px"}, 1.33, "moved the right amount ffg");
+check(document.querySelectorAll('.anim')[0],{top:'0px'},0);
+check(document.querySelectorAll('.anim')[1],{top:'200px'},0);
+check(document.querySelectorAll('.anim')[2],{top:'200px'},0);
+
 runTests();
 </script>
 
