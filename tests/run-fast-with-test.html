@@ -62,12 +62,18 @@ new Animation(document.querySelector(".anim"), {left: "600px"}, {duration: 4});
 new Animation(document.querySelectorAll(".anim")[1], {top: "200px"}, {duration: 2});
 new Animation(document.querySelectorAll(".anim")[2], {top: "200px", left:"600px"}, {duration: 4});
 
-check(document.querySelectorAll('.anim')[0],{top:'0px'},4);
-check(document.querySelectorAll('.anim')[1],{top:'200px'},4);
-check(document.querySelectorAll('.anim')[2],{top:'200px'},4);
-check(document.querySelectorAll('.anim')[0],{top:'0px'},0.9002639999380335);
-check(document.querySelectorAll('.anim')[1],{top:'90.02639770507813px'},0.9002639999380335);
-check(document.querySelectorAll('.anim')[2],{top:'45.01319885253906px'},0.9002639999380335);
+check(document.querySelectorAll('.anim')[0],{top:'0px',left:'0px'},0);
+check(document.querySelectorAll('.anim')[1],{top:'0px',left:'0px'},0);
+check(document.querySelectorAll('.anim')[2],{top:'0px',left:'0px'},0);
+check(document.querySelectorAll('.anim')[0],{top:'0px',left:'150px'},1);
+check(document.querySelectorAll('.anim')[1],{top:'100px',left:'0px'},1);
+check(document.querySelectorAll('.anim')[2],{top:'50px',left:'150px'},1);
+check(document.querySelectorAll('.anim')[0],{top:'0px',left:'300px'},2);
+check(document.querySelectorAll('.anim')[1],{top:'200px',left:'0px'},2);
+check(document.querySelectorAll('.anim')[2],{top:'100px',left:'300px'},2);
+check(document.querySelectorAll('.anim')[0],{top:'0px',left:'450px'},3);
+check(document.querySelectorAll('.anim')[1],{top:'200px',left:'0px'},3);
+check(document.querySelectorAll('.anim')[2],{top:'150px',left:'450px'},3);
 
 runTests();
 </script>

@@ -42,6 +42,14 @@ body{
 <script>
 var parentAnimation;
 var time = 0;
+var lastRun = false;
+var frameTime = 1000;
+var checks = [];
+var interval;
+
+document.getElementById("interval").value = "1";
+document.getElementById("obProp").value = ".anim, top";
+document.getElementById("iframeSrc").value = "run-fast-test.html";
 
 function ToCheck(object, initSelctor, properties){
   this.object = object;
@@ -55,17 +63,25 @@ function loadFile(){
 }
 
 function getSettings(){
-  var interval = Number(document.getElementById("interval").value);
-  var obProp = document.getElementById("obProp").value;
-  var checkStack = process(obProp);
-  parentAnimation = window.frame.parentAnimation;
-  parentAnimation.currentTime = 0;
-  window.webkitRequestAnimationFrame(generate(interval, checkStack));
+  // Delete previous checks
+  document.getElementById("checks").innerHTML = "";
+  document.getElementById("frame").src = document.getElementById("iframeSrc").value;
+  interval = Number(document.getElementById("interval").value);
+
+  setTimeout(function(){
+    var obProp = document.getElementById("obProp").value;
+    process(obProp);
+    console.log(checks);
+    parentAnimation = window.frame.parentAnimation;
+    parentAnimation.currentTime = 0;
+    parentAnimation.pause();
+    setTimeout(function(){generate();}, frameTime);
+  }, 1000);
 }
 
 function process(rawString){
   // Put all checks into checkStack
-  var checkStack = [];
+  checks = [];
   rawString = rawString.split("\n");
 
   for (var x in rawString){
@@ -76,20 +92,18 @@ function process(rawString){
     for (var i = 1; i < rawString[x].length; i++){
       prop.push(rawString[x][i]);
     }
-    checkStack.push(new ToCheck(object, rawString[x][0], prop));
+    checks.push(new ToCheck(object, rawString[x][0], prop));
   }
-  return checkStack;
 }
 
-function generate(interval, checks){
+function generate(){
   // Produce checks at this time
-  var time = parentAnimation.iterationTime;
+  var time = parentAnimation.iterationTime == null ? 0 : parentAnimation.iterationTime;
   for (var x in checks){
     for(var i = 0; i < checks[x].object.length; i++){
       console.log(checks[x].object[i]);
       var props = checks[x].object[i].currentStyle ||
           getComputedStyle(checks[x].object[i], null);
-      console.log(props["width"]);
       var propsPrint = "{";
       for(var j in checks[x].properties){
         var p = checks[x].properties[j];
@@ -105,13 +119,17 @@ function generate(interval, checks){
 
   // Schedule this function to be called on the next frame refresh
   if(parentAnimation.iterationTime < parentAnimation.animationDuration){
-    window.webkitRequestAnimationFrame(generate(interval, checks));
+    setTimeout(function(){ generate(); }, frameTime);
+  } else if(!lastRun){
+    lastRun = true;
+    setTimeout(function(){ generate(); }, frameTime);
   }
 }
 
 function printCheck(object, number, properties, time){
   var newCheck = "check(document.querySelectorAll('" + object + "')[" + number +
       "]," + properties + "," + time + ");";
+  console.log(newCheck);
   var ouput = document.getElementById("checks");
   ouput.innerHTML += newCheck + "<br>";
 }
