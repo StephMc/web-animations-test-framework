@@ -39,13 +39,16 @@ var pauseTime = 1000;
 var testTimeout = 10000;
 // How long it takes for the whole test system to timeout.
 var frameworkTimeout = 20000;
+// The default error margin if none is specified
+// It's currently 12 as it works well with most average speed animations
+var defaultEpsilon = 12;
 
 // To get user pausing working correctly
 var beingPaused = 0;
 var userPaused = false;
 
 function testRecord(test, object, targets, time, message, cssStyle,
-                    offsets, isRefTest){
+                    offsets, isRefTest, epsilon){
   this.test = test;
   this.object = object;
   this.targets = targets;
@@ -54,6 +57,7 @@ function testRecord(test, object, targets, time, message, cssStyle,
   this.cssStyle = cssStyle;
   this.offsets = offsets;
   this.isRefTest = isRefTest;
+  this.epsilon = epsilon;
 }
 
 // Call this function before setting up any checks.
@@ -124,11 +128,12 @@ function setState(newState){
 }
 
 // Adds each test to a list to be processed when runTests is called.
-function check(object, targets, time, message){
+function check(object, targets, time, message, epsilon){
   if(testPacket.length == 0) reparent();
   // Create new async test
   var test = async_test(message);
   test.timeout_length = testTimeout;
+  if(epsilon === undefined) epsilon = defaultEpsilon;
 
   // Store the inital css style of the animated object so it can be
   // used for manual flashing.
@@ -140,15 +145,15 @@ function check(object, targets, time, message){
     var maxTime = document.animationTimeline.children[0].animationDuration;
     // Generate a test for each time you want to check the objects.
     for (var x = 0; x < maxTime/time; x++){
-      var temp = new testRecord(test, object, targets, time * x,
-          "Property " + targets + " is not satisfied", css, offsets, true);
+      var temp = new testRecord(test, object, targets, time * x, "Property "
+          + targets + " is not satisfied", css, offsets, true, epsilon);
       testPacket.push(temp);
     }
     var temp = new testRecord(test, object, targets, time * x, "Property "
-        + targets + " is not satisfied", css, offsets, "Last refTest");
+        + targets + " is not satisfied", css, offsets, "Last refTest", epsilon);
     testPacket.push(temp);
   } else testPacket.push(new testRecord(test, object, targets, time, "Property "
-        + targets + " is not satisfied", css, offsets, false));
+        + targets + " is not satisfied", css, offsets, false, epsilon));
 }
 
 // Helper function which gets the current absolute position of an object.
@@ -430,6 +435,7 @@ function assert_properties(test){
   var object = test.object;
   var targets = test.targets;
   var message = test.message;
+  var epsilon = test.epsilon;
   var time = document.animationTimeline.children[0].iterationTime;
   if (time == null) time = 0;
 
@@ -473,7 +479,7 @@ function assert_properties(test){
         var c = curr.replace(/[^0-9.\s]/g, "").split(" ");
         for (var x in t){
           test.test.step(function (){
-            assert_approx_equals(Number(c[x]), Number(t[x]), 12, "At time " + time + ", " + propName +
+            assert_approx_equals(Number(c[x]), Number(t[x]), epsilon, "At time " + time + ", " + propName +
                 " is not correct. Target: " + tar + " Current state: " + curr);
           });
         }

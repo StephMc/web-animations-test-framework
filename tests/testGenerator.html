@@ -41,9 +41,8 @@ body{
 
 <script>
 var parentAnimation;
-var time = 0;
 var lastRun = false;
-var frameTime = 1000;
+var frameTime = 50;
 var checks = [];
 var interval;
 
@@ -64,6 +63,7 @@ function loadFile(){
 
 function getSettings(){
   // Delete previous checks
+  lastRun = false;
   document.getElementById("checks").innerHTML = "";
   document.getElementById("frame").src = document.getElementById("iframeSrc").value;
   interval = Number(document.getElementById("interval").value);
@@ -76,7 +76,7 @@ function getSettings(){
     parentAnimation.currentTime = 0;
     parentAnimation.pause();
     setTimeout(function(){generate();}, frameTime);
-  }, 1000);
+  }, 100);
 }
 
 function process(rawString){
