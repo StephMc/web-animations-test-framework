@@ -195,7 +195,6 @@ function animTimeViewer(){
   if (currTime != null) currTime = currTime.toFixed(2);
   else currTime = 0.00;
   var object = document.getElementById("animViewerText");
-  var comp = object.currentStyle || getComputedStyle(object, null);
   object.innerHTML = "Current animation time " + currTime;
   window.webkitRequestAnimationFrame(function(){ animTimeViewer(); });
 }

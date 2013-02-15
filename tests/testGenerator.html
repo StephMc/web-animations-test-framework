@@ -42,7 +42,7 @@ body{
 <script>
 var parentAnimation;
 var lastRun = false;
-var frameTime = 50;
+var frameTime = 100;
 var checks = [];
 var interval;
 
@@ -71,11 +71,12 @@ function getSettings(){
   setTimeout(function(){
     var obProp = document.getElementById("obProp").value;
     process(obProp);
-    console.log(checks);
+    window.frame.reparent();
     parentAnimation = window.frame.parentAnimation;
+    console.log(parentAnimation);
     parentAnimation.currentTime = 0;
     parentAnimation.pause();
-    setTimeout(function(){generate();}, frameTime);
+    setTimeout(generate, frameTime);
   }, 100);
 }
 
@@ -98,16 +99,21 @@ function process(rawString){
 
 function generate(){
   // Produce checks at this time
-  var time = parentAnimation.iterationTime == null ? 0 : parentAnimation.iterationTime;
+  var time = parentAnimation.iterationTime == null ?
+      0 : parentAnimation.iterationTime;
   for (var x in checks){
     for(var i = 0; i < checks[x].object.length; i++){
-      console.log(checks[x].object[i]);
-      var props = checks[x].object[i].currentStyle ||
+      var isSVG = (checks[x].object[i].nodeName != "DIV");
+
+      if(isSVG) var props = checks[x].object[i].attributes;
+      else var props = checks[x].object[i].currentStyle ||
           getComputedStyle(checks[x].object[i], null);
+
       var propsPrint = "{";
       for(var j in checks[x].properties){
         var p = checks[x].properties[j];
-        propsPrint += p + ":'" + props[p] + "'";
+        var value = isSVG ? props[p].value : props[p];
+        propsPrint += p + ":'" + value + "'";
         if (j < checks[x].properties.length -1) propsPrint += ",";
       }
       propsPrint += "}";
@@ -119,17 +125,16 @@ function generate(){
 
   // Schedule this function to be called on the next frame refresh
   if(parentAnimation.iterationTime < parentAnimation.animationDuration){
-    setTimeout(function(){ generate(); }, frameTime);
+    setTimeout(generate, frameTime);
   } else if(!lastRun){
     lastRun = true;
-    setTimeout(function(){ generate(); }, frameTime);
+    setTimeout(generate, frameTime);
   }
 }
 
 function printCheck(object, number, properties, time){
   var newCheck = "check(document.querySelectorAll('" + object + "')[" + number +
       "]," + properties + "," + time + ");";
-  console.log(newCheck);
   var ouput = document.getElementById("checks");
   ouput.innerHTML += newCheck + "<br>";
 }
