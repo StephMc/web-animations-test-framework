@@ -73,7 +73,6 @@ function getSettings(){
     process(obProp);
     window.frame.reparent();
     parentAnimation = window.frame.parentAnimation;
-    console.log(parentAnimation);
     parentAnimation.currentTime = 0;
     parentAnimation.pause();
     setTimeout(generate, frameTime);

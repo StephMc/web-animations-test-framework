@@ -349,11 +349,12 @@ function flashing(test) {
       flash.setAttribute(prop, tar);
     }
   }
-
+  
   if (type == "DIV" && test.cssStyle.position == "relative"){
+    console.log("pop");
     if (!seenTop){
       flash.style.top = (getOffset(test.object).top -
-                         getOffset(test.object.parentNode).top) +"px";
+                        getOffset(test.object.parentNode).top) +"px";
     }
     if (!seenLeft){
       flash.style.left = (getOffset(test.object).left -
@@ -474,13 +475,24 @@ function assert_properties(test){
           var tar = tempS[propName];
           var curr = compS[propName];
         }
-        var t = tar.replace(/[^0-9.\s]/g, "").split(" ");
-        var c = curr.replace(/[^0-9.\s]/g, "").split(" ");
-        for (var x in t){
+
+        var t = tar.replace(/[^0-9.\s]/g, "");
+        var c = curr.replace(/[^0-9.\s]/g, "");
+        if(t.length == 0) {
+          // Assume it's a word property so do an exact assert
           test.test.step(function (){
-            assert_approx_equals(Number(c[x]), Number(t[x]), epsilon, "At time " + time + ", " + propName +
+            assert_equals(curr, tar, "At time " + time + ", " + propName +
                 " is not correct. Target: " + tar + " Current state: " + curr);
           });
+        } else {
+          t = t.split(" ");
+          c = c.split(" ");
+          for (var x in t){
+            test.test.step(function (){
+              assert_approx_equals(Number(c[x]), Number(t[x]), epsilon, "At time " + time + ", " + propName +
+                  " is not correct. Target: " + tar + " Current state: " + curr);
+            });
+          }
         }
       }
     }
