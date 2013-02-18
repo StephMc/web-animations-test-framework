@@ -20,7 +20,7 @@ limitations under the License.
 body {
   margin: 0px;
 }
-.test {
+.testElement {
   height: 50px;
   background: lightsteelblue;
 }
@@ -52,28 +52,29 @@ for (var start in states) {
     document.getElementById("test").appendChild(testContainer);
 
     var testElement = document.createElement('div');
-    testElement.classList.add('test');
+    testElement.classList.add('testElement');
     testContainer.appendChild(testElement);
     new Animation(testElement, {visibility: frames}, timing);
   }
 }
-check(document.querySelectorAll('.test')[0],{visibility:'visible'},0);
-check(document.querySelectorAll('.test')[1],{visibility:'visible'},0);
-check(document.querySelectorAll('.test')[2],{visibility:'visible'},0);
-check(document.querySelectorAll('.test')[3],{visibility:'visible'},0);
-check(document.querySelectorAll('.test')[4],{visibility:'visible'},0);
-check(document.querySelectorAll('.test')[5],{visibility:'visible'},0);
-check(document.querySelectorAll('.test')[6],{visibility:'visible'},0);
-check(document.querySelectorAll('.test')[7],{visibility:'visible'},0);
-check(document.querySelectorAll('.test')[8],{visibility:'visible'},0);
-check(document.querySelectorAll('.test')[0],{visibility:'visible'},0.5);
-check(document.querySelectorAll('.test')[1],{visibility:'hidden'},0.5);
-check(document.querySelectorAll('.test')[2],{visibility:'collapse'},0.5);
-check(document.querySelectorAll('.test')[3],{visibility:'visible'},0.5);
-check(document.querySelectorAll('.test')[4],{visibility:'hidden'},0.5);
-check(document.querySelectorAll('.test')[5],{visibility:'collapse'},0.5);
-check(document.querySelectorAll('.test')[6],{visibility:'visible'},0.5);
-check(document.querySelectorAll('.test')[7],{visibility:'hidden'},0.5);
-check(document.querySelectorAll('.test')[8],{visibility:'collapse'},0.5);
+
+check(document.querySelectorAll('.testElement')[0],{visibility:'visible'},0);
+check(document.querySelectorAll('.testElement')[1],{visibility:'visible'},0);
+check(document.querySelectorAll('.testElement')[2],{visibility:'visible'},0);
+check(document.querySelectorAll('.testElement')[3],{visibility:'visible'},0);
+check(document.querySelectorAll('.testElement')[4],{visibility:'visible'},0);
+check(document.querySelectorAll('.testElement')[5],{visibility:'visible'},0);
+check(document.querySelectorAll('.testElement')[6],{visibility:'visible'},0);
+check(document.querySelectorAll('.testElement')[7],{visibility:'visible'},0);
+check(document.querySelectorAll('.testElement')[8],{visibility:'visible'},0);
+check(document.querySelectorAll('.testElement')[0],{visibility:'visible'},0.5);
+check(document.querySelectorAll('.testElement')[1],{visibility:'hidden'},0.5);
+check(document.querySelectorAll('.testElement')[2],{visibility:'collapse'},0.5);
+check(document.querySelectorAll('.testElement')[3],{visibility:'visible'},0.5);
+check(document.querySelectorAll('.testElement')[4],{visibility:'hidden'},0.5);
+check(document.querySelectorAll('.testElement')[5],{visibility:'collapse'},0.5);
+check(document.querySelectorAll('.testElement')[6],{visibility:'visible'},0.5);
+check(document.querySelectorAll('.testElement')[7],{visibility:'hidden'},0.5);
+check(document.querySelectorAll('.testElement')[8],{visibility:'collapse'},0.5);
 runTests();
 </script>

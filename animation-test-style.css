@@ -5,13 +5,11 @@
 
 #padding {
 	position: relative;
+	border-width: 0px;
 }
 
 .testBox {
 	width: 100%;
-	border-width: 1px;
-	border-color: black;
-	border-style: solid;
 	position: absolute;
 	left: 0px;
 	top: 0px;

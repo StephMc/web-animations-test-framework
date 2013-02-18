@@ -72,7 +72,7 @@ function setupTests(timeouts){
   // Set up padding for option bar
   var padding = document.createElement('div');
   padding.id = "padding";
-  padding.style.height = "300px"; // TODO: dynamically assign this
+  padding.className = "testBox";
   document.body.appendChild(padding);
 
   // Generate options bar
@@ -316,7 +316,7 @@ function flashing(test) {
     document.getElementById("svgBox").appendChild(flash);
   }
 
-  if(type == "DIV"){
+  if(type == "DIV") {
     // Copy the objects orginal css style
     flash.style.cssText = test.cssStyle.cssText;
     flash.style.position = "absolute";
@@ -332,54 +332,36 @@ function flashing(test) {
 
   var seenTop = false;
   var seenLeft = false;
-  for (var propName in test.targets){
+  for (var propName in test.targets) {
     var tar = test.targets[propName];
-    var prop = propName
-    if (test.cssStyle.position == "relative"){
-      if (prop == "left"){
-        seenLeft = true;
-        tar = parseInt(tar);
-        tar += parseInt(test.offsets["left"]);
-        tar = tar + "px";
-      } else if (prop == "top"){
-        seenTop = true;
-        tar = parseInt(tar);
-        tar += parseInt(test.offsets["top"]);
-        tar = tar + "px";
-      }
-    } else {
-      if (prop == "left") seenLeft = true;
-      else if (prop == "top") seenTop = true;
-    }
+    if (propName == "left") seenLeft = true;
+    else if (propName == "top") seenTop = true;
     if (type == "DIV"){
-      flash.style[prop] = tar;
+      flash.style[propName] = tar;
     } else {
-      if (prop.indexOf("transform") != -1) prop = "transform";
-      flash.setAttribute(prop, tar);
+      if (propName.indexOf("transform") != -1) propName = "transform";
+      flash.setAttribute(propName, tar);
     }
   }
 
-  if (type == "DIV" && test.cssStyle.position == "relative"){
-    console.log("pop");
+  if (type == "DIV") {
     if (!seenTop){
-      flash.style.top = (getOffset(test.object).top -
-                        getOffset(test.object.parentNode).top) +"px";
+      flash.style.top = getOffset(test.object).top + "px";
     }
-    if (!seenLeft){
-      flash.style.left = (getOffset(test.object).left -
-                          getOffset(test.object.parentNode).left)+"px";
+    if (!seenLeft) {
+      flash.style.left = getOffset(test.object).left + "px";
     }
   }
 
   //Set up the border
   if (type == "DIV"){
     flash.style.borderColor = 'black';
-    flash.style.borderWidth = 'thick';
+    flash.style.borderWidth = '3px';
     flash.style.borderStyle = 'solid';
     flash.style.opacity = 1;
   } else {
     flash.setAttribute("stroke", "black");
-    flash.setAttribute("stroke-width", "5px");
+    flash.setAttribute("stroke-width", "3px");
     flash.setAttribute("fill-opacity", 1);
   }
 
@@ -424,7 +406,7 @@ function toggleFlash(){
         allFlash[i].setAttribute("stroke-width", "0px");
       } else {
         allFlash[i].setAttribute("fill-opacity", 1);
-        allFlash[i].setAttribute("stroke-width", "5px");
+        allFlash[i].setAttribute("stroke-width", "3px");
       }
     }
   }
