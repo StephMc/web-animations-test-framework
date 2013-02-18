@@ -4,11 +4,15 @@
 }
 
 #padding {
-	height: 30px;
+	position: relative;
 }
 
 .testBox {
+	width: 100%;
+	border-width: 1px;
 	border-color: black;
-	border-width: 10px;
 	border-style: solid;
+	position: absolute;
+	left: 0px;
+	top: 0px;
 }

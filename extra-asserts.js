@@ -72,7 +72,7 @@ function setupTests(timeouts){
   // Set up padding for option bar
   var padding = document.createElement('div');
   padding.id = "padding";
-  padding.style.height = "30px";
+  padding.style.height = "300px"; // TODO: dynamically assign this
   document.body.appendChild(padding);
 
   // Generate options bar
@@ -117,15 +117,45 @@ function setupTests(timeouts){
     runType.selectedIndex = 0;
   }
 
-  // Create dump zone for svg flash graphics
-  var svgDump = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svgDump.setAttribute("id", "svgDump");
-  document.getElementById("test").appendChild(svgDump);
-
+  // Create copy of the test div to show flashing correctly
+  var testBoxCopy = clone(document.getElementById("test"));
+  testBoxCopy.className = "testBox";
+  document.body.appendChild(testBoxCopy);
+  console.log(testBoxCopy);
 
   // Setup the pause animation function
   document.getElementById("test").setAttribute("onclick", "animPause()");
   setup({ explicit_done: true, timeout: frameworkTimeout});
+}
+
+// Creates a deep copy
+function clone(parent){
+  var cparent = copy(parent);
+  var children = getChildren(parent);
+  for(var x = 0; x < children.length; x++){
+    var childTree = clone(children[x]);
+    cparent.appendChild(childTree);
+  }
+  return cparent;
+}
+
+function getChildren(parent){
+  var children = [];
+  var child = parent.childNodes;
+  for(var i = 0; i < child.length; i++){
+    if(child[i].nodeType == 1) children.push(child[i]);
+  }
+  return children;
+}
+
+var index = 0;
+function copy(element){
+  newElement = document.createElement('div');
+  newElement.id = index;
+  index++;
+  // Apply the style from the passed in element to the knew one
+  // TODO
+  return newElement;
 }
 
 // Allows tutorial harness to edit state
