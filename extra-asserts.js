@@ -36,12 +36,14 @@ var testPacket = [];
 // How long to show each manual check for.
 var pauseTime = 1000;
 // How long it takes an individual test to timeout.
-var testTimeout = 10000;
+var testTimeout = 20000;
 // How long it takes for the whole test system to timeout.
 var frameworkTimeout = 20000;
 // The default error margin if none is specified
 // It's currently 12 as it works well with most average speed animations
-var defaultEpsilon = 12;
+var defaultEpsilon = 0;
+// The time between each frame render in seconds
+var framePeriod = 0.016;
 
 // To get user pausing working correctly
 var beingPaused = 0;
@@ -232,22 +234,32 @@ function testTimeSort(a,b) { return(a.time - b.time) };
 
 function testRunner(index){
   var currTest = testPacket[testIndex][0];
-  var animLength = document.animationTimeline.children[0].animationDuration;
+  var animLength = parentAnimation.animationDuration;
   if (currTest.time > animLength) currTest.time = animLength;
-  if (currTest.time <= document.animationTimeline.children[0].iterationTime){
-    for (var i = 0; i < testPacket[testIndex].length; i++){
-      currTest = testPacket[testIndex][i];
-      assert_properties(currTest);
-      if(currTest.isRefTest == "Last refTest" || currTest.isRefTest == false){
-        currTest.test.done();
-      }
-      if(currTest.isRefTest == false) flashing(currTest);
-    }
-    testIndex++;
+  // Forces the frame closest to the test to be exactly the test time
+  if (currTest.time < parentAnimation.iterationTime + framePeriod){
+    parentAnimation.currentTime = currTest.time;
+    beingPaused++;
+    parentAnimation.pause();
+    window.webkitRequestAnimationFrame(function(){runManualTest();});
   }
   if (testIndex < testPacket.length){
       window.webkitRequestAnimationFrame(function(){testRunner(index);});
   } else done();
+}
+
+function runManualTest(){
+  for (var i = 0; i < testPacket[testIndex].length; i++){
+    var currTest = testPacket[testIndex][i];
+    assert_properties(currTest);
+    if(currTest.isRefTest == "Last refTest" || currTest.isRefTest == false){
+      currTest.test.done();
+    }
+    if(currTest.isRefTest == false) flashing(currTest);
+  }
+  testIndex++;
+  beingPaused--;
+  if(beingPaused == 0) parentAnimation.play();
 }
 
 function autoTestRunner(){
