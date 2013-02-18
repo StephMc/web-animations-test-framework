@@ -29,7 +29,7 @@ limitations under the License.
   border-bottom: solid white 1px;
 }
 .testBox {
-  height: 250px;
+  height: 600px;
 }
 </style>
 
@@ -48,23 +48,23 @@ limitations under the License.
 <link rel='stylesheet' type="text/css" href="../animation-test-style.css">
 
 <script>
-setupTests();
+//setupTests();
 
 var rect = document.querySelector(".anim");
 var fish = document.querySelector(".divvy");
 new Animation(rect, {cx: "400px"}, 1);
 new Animation(fish, {left: "400px"}, 1);
 
-check(document.querySelectorAll('.divvy')[0],{left:'0px'},0);
-check(document.querySelectorAll('.anim')[0],{cx:'50px'},0);
-check(document.querySelectorAll('.divvy')[0],{left:'100px'},0.25);
-check(document.querySelectorAll('.anim')[0],{cx:'137.5px'},0.25);
-check(document.querySelectorAll('.divvy')[0],{left:'200px'},0.5);
-check(document.querySelectorAll('.anim')[0],{cx:'225px'},0.5);
-check(document.querySelectorAll('.divvy')[0],{left:'300px'},0.75);
-check(document.querySelectorAll('.anim')[0],{cx:'312.5px'},0.75);
-check(document.querySelectorAll('.divvy')[0],{left:'400px'},1);
-check(document.querySelectorAll('.anim')[0],{cx:'400px'},1);
+// check(document.querySelectorAll('.divvy')[0],{left:'0px'},0);
+// check(document.querySelectorAll('.anim')[0],{cx:'50px'},0);
+// check(document.querySelectorAll('.divvy')[0],{left:'100px'},0.25);
+// check(document.querySelectorAll('.anim')[0],{cx:'137.5px'},0.25);
+// check(document.querySelectorAll('.divvy')[0],{left:'200px'},0.5);
+// check(document.querySelectorAll('.anim')[0],{cx:'225px'},0.5);
+// check(document.querySelectorAll('.divvy')[0],{left:'300px'},0.75);
+// check(document.querySelectorAll('.anim')[0],{cx:'312.5px'},0.75);
+// check(document.querySelectorAll('.divvy')[0],{left:'400px'},1);
+// check(document.querySelectorAll('.anim')[0],{cx:'400px'},1);
 
-runTests();
+// runTests();
 </script>

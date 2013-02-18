@@ -117,6 +117,12 @@ function setupTests(timeouts){
     runType.selectedIndex = 0;
   }
 
+  // Create dump zone for svg flash graphics
+  var svgDump = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svgDump.setAttribute("id", "svgDump");
+  document.getElementById("test").appendChild(svgDump);
+
+
   // Setup the pause animation function
   document.getElementById("test").setAttribute("onclick", "animPause()");
   setup({ explicit_done: true, timeout: frameworkTimeout});
@@ -300,11 +306,13 @@ function flashing(test) {
   var type = test.object.nodeName;
 
   // Create a new object of the same type as the thing being tested.
-  if (type == "DIV") var flash = document.createElement('div');
-  else {
+  if (type == "DIV") {
+    var flash = document.createElement('div');
+    test.object.parentNode.appendChild(flash);
+  } else {
     var flash = document.createElementNS("http://www.w3.org/2000/svg", type);
+    document.getElementById("svgDump").appendChild(flash);
   }
-  test.object.parentNode.appendChild(flash);
 
   if(type == "DIV"){
     // Copy the objects orginal css style
@@ -313,7 +321,6 @@ function flashing(test) {
     flash.innerHTML = test.object.innerHTML;
     flash.className = "flash";
   } else {
-    flash.setAttribute("class", "flash");
     for (var x = 0; x < test.object.attributes.length; x++){
       flash.setAttribute(test.object.attributes[x].name,
                          test.object.attributes[x].value);
@@ -349,7 +356,7 @@ function flashing(test) {
       flash.setAttribute(prop, tar);
     }
   }
-  
+
   if (type == "DIV" && test.cssStyle.position == "relative"){
     console.log("pop");
     if (!seenTop){
@@ -371,6 +378,7 @@ function flashing(test) {
   } else {
     flash.setAttribute("stroke", "black");
     flash.setAttribute("stroke-width", "5px");
+    flash.setAttribute("fill-opacity", 1);
   }
 
   flashCleanUp(flash);
@@ -393,31 +401,28 @@ function flashCleanUp(victim){
 }
 
 function toggleFlash(){
-  var elements = document.getElementsByClassName("flash");
-  console.log(elements);
-  var type = elements[0].nodeName;
+  var allFlash = [];
+  var elements = document.getElementById("svgDump").childNodes;
+  for(var i = 0; i < elements.length; i++) allFlash.push(elements[i]);
+  elements = document.getElementsByClassName("flash");
+  for(var i = 0; i < elements.length; i++) allFlash.push(elements[i]);
+  console.log(allFlash);
 
-  if(elements.length > 0){
+  for(var i in allFlash){
+    var type = allFlash[i].nodeName;
     if(type == "DIV"){
-      if (elements[0].style.display == 'block'){
-        for (var x = 0; x < elements.length; x++){
-          elements[x].style.display = 'none';
-        }
+      if (allFlash[i].style.display == 'block'){
+        allFlash[i].style.display = 'none';
       } else {
-        for (var x = 0; x < elements.length; x++){
-          elements[x].style.display = 'block';
-        }
+        allFlash[i].style.display = 'block';
       }
     } else {
-      console.log(elements[0].attributes);
-      if (elements[0].attributes.fillOpacity == 1){
-        for (var x = 0; x < elements.length; x++){
-          elements[x].setAttribute("fill-opacity", 0);
-        }
+      if (allFlash[i].getAttribute("fill-opacity") == 1){
+        allFlash[i].setAttribute("fill-opacity", 0);
+        allFlash[i].setAttribute("stroke-width", "0px");
       } else {
-        for (var x = 0; x < elements.length; x++){
-          elements[x].setAttribute("fill-opacity", 1);
-        }
+        allFlash[i].setAttribute("fill-opacity", 1);
+        allFlash[i].setAttribute("stroke-width", "5px");
       }
     }
   }
@@ -440,7 +445,8 @@ function assert_properties(test){
   if (time == null) time = 0;
 
   var isSVG = (object.nodeName != "DIV");
-  var tempOb = document.createElement(object.nodeName);
+  var tempOb = isSVG ? document.createElementNS("http://www.w3.org/2000/svg",
+      object.nodeName) : document.createElement(object.nodeName);
   tempOb.style.position = "absolute";
   object.parentNode.appendChild(tempOb);
 
