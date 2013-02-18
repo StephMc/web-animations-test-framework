@@ -119,12 +119,12 @@ function setupTests(timeouts){
 
   // Create copy of the test div to show flashing correctly
   var testBoxCopy = clone(document.getElementById("test"));
-  testBoxCopy.className = "testBox";
+  testBoxCopy.id = "flashBox";
   document.body.appendChild(testBoxCopy);
   console.log(testBoxCopy);
 
   // Setup the pause animation function
-  document.getElementById("test").setAttribute("onclick", "animPause()");
+  testBoxCopy.setAttribute("onclick", "animPause()");
   setup({ explicit_done: true, timeout: frameworkTimeout});
 }
 
@@ -148,13 +148,10 @@ function getChildren(parent){
   return children;
 }
 
-var index = 0;
 function copy(element){
   newElement = document.createElement('div');
-  newElement.id = index;
-  index++;
   // Apply the style from the passed in element to the knew one
-  // TODO
+  newElement.style.cssText = getComputedStyle(element, null).cssText;
   return newElement;
 }
 
