@@ -118,41 +118,16 @@ function setupTests(timeouts){
   }
 
   // Create copy of the test div to show flashing correctly
-  var testBoxCopy = clone(document.getElementById("test"));
+  var testBoxCopy = document.createElement('div');
   testBoxCopy.id = "flashBox";
+  testBoxCopy.className = "testBox";
   document.body.appendChild(testBoxCopy);
-  console.log(testBoxCopy);
-
+  var svgBox = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svgBox.id = "svgBox";
+  testBoxCopy.appendChild(svgBox);
   // Setup the pause animation function
   testBoxCopy.setAttribute("onclick", "animPause()");
   setup({ explicit_done: true, timeout: frameworkTimeout});
-}
-
-// Creates a deep copy
-function clone(parent){
-  var cparent = copy(parent);
-  var children = getChildren(parent);
-  for(var x = 0; x < children.length; x++){
-    var childTree = clone(children[x]);
-    cparent.appendChild(childTree);
-  }
-  return cparent;
-}
-
-function getChildren(parent){
-  var children = [];
-  var child = parent.childNodes;
-  for(var i = 0; i < child.length; i++){
-    if(child[i].nodeType == 1) children.push(child[i]);
-  }
-  return children;
-}
-
-function copy(element){
-  newElement = document.createElement('div');
-  // Apply the style from the passed in element to the knew one
-  newElement.style.cssText = getComputedStyle(element, null).cssText;
-  return newElement;
 }
 
 // Allows tutorial harness to edit state
@@ -335,10 +310,10 @@ function flashing(test) {
   // Create a new object of the same type as the thing being tested.
   if (type == "DIV") {
     var flash = document.createElement('div');
-    test.object.parentNode.appendChild(flash);
+    document.getElementById("flashBox").appendChild(flash);
   } else {
     var flash = document.createElementNS("http://www.w3.org/2000/svg", type);
-    document.getElementById("svgDump").appendChild(flash);
+    document.getElementById("svgBox").appendChild(flash);
   }
 
   if(type == "DIV"){
@@ -429,7 +404,7 @@ function flashCleanUp(victim){
 
 function toggleFlash(){
   var allFlash = [];
-  var elements = document.getElementById("svgDump").childNodes;
+  var elements = document.getElementById("svgBox").childNodes;
   for(var i = 0; i < elements.length; i++) allFlash.push(elements[i]);
   elements = document.getElementsByClassName("flash");
   for(var i = 0; i < elements.length; i++) allFlash.push(elements[i]);
