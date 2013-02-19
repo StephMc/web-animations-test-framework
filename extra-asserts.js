@@ -143,14 +143,14 @@ function setupTests(timeouts){
   testBoxCopy.appendChild(svgBox);
   // Setup the pause animation function
   testBoxCopy.setAttribute("onclick", "animPause()");
-  setup({ explicit_done: true, timeout: frameworkTimeout});
+  setup({ explicit_done: true, timeout: frameworkTimeout, explicit_timeout: true});
 }
 
 function startSlide(event){
   scrubbing = true;
   var bar = document.getElementById("timeBar");
-  beingPaused++;
-  parentAnimation.pause();
+  console.log("startSlide is pausing");
+  pause();
   var setPercent = ((((event.clientX - bar.offsetLeft) / bar.offsetWidth)).toFixed(2));
   bar.addEventListener('mousemove', moveSlide, false);
   document.getElementById("slider").style.width = (setPercent * 100) + '%';
@@ -177,8 +177,8 @@ function stopSlide(event){
     for (testIndex = 0; testPacket[testIndex][0].time < parentAnimation.iterationTime &&
         testIndex < testPacket.length; testIndex++);
 
-    beingPaused--;
-    if(beingPaused == 0) parentAnimation.play();
+    console.log("stopSlide is playing");
+    play();
     scrubbing = false;
   }
 }
@@ -186,6 +186,18 @@ function stopSlide(event){
 // Allows tutorial harness to edit state
 function setState(newState){
   state = newState;
+}
+
+// Pause + play allow the animation to be paused by many different parts of extra-asserts
+// but not played again until all parts that paused the animation say to play again
+function pause(){
+  beingPaused++;
+  parentAnimation.pause();
+}
+
+function play(){
+  beingPaused--;
+  if(beingPaused == 0) parentAnimation.play();
 }
 
 // Adds each test to a list to be processed when runTests is called.
@@ -245,7 +257,7 @@ function runTests(){
   sortTests();
   if (state == "Manual") testRunner();
   else {
-    parentAnimation.pause();
+    pause();
     autoTestRunner();
   }
 }
@@ -293,8 +305,8 @@ function testRunner(index){
   if(!scrubbing){
     if (currTest.time < parentAnimation.iterationTime + framePeriod){
       parentAnimation.currentTime = currTest.time;
-      beingPaused++;
-      parentAnimation.pause();
+      console.log("testRunner is pausing");
+      pause();
       window.webkitRequestAnimationFrame(function(){runManualTest();});
       // We've just scheduled the last test so kill the testRunner
       if(testIndex == testPacket.length - 1) stopTestRunner = true;
@@ -317,9 +329,13 @@ function runManualTest(){
     if(currTest.isRefTest == false) flashing(currTest);
   }
   testIndex++;
-  beingPaused--;
-  if(beingPaused == 0) parentAnimation.play();
-  if(testIndex == testPacket.length) done();
+  console.log("runManualTest is playing");
+  play()
+  if(testIndex == testPacket.length){
+    console.log("DONE");
+    done();
+    timeout();
+  }
 }
 
 function autoTestRunner(){
@@ -338,7 +354,7 @@ function autoTestRunner(){
     testIndex++;
     window.webkitRequestAnimationFrame(function(){ autoTestRunner(); });
   } else {
-    parentAnimation.pause();
+    pause();
     done();
   }
 }
@@ -354,18 +370,16 @@ function restart(){
 function animPause(){
   if(state == "Manual"){
     if (userPaused){
-      beingPaused--;
-      if (beingPaused == 0){
-        if (document.animationTimeline.children[0].iterationTime
-          < document.animationTimeline.children[0].animationDuration - 0.01){
-          parentAnimation.play();
-        }
+      if (document.animationTimeline.children[0].iterationTime
+          < document.animationTimeline.children[0].animationDuration){
+        console.log("animPause is playing");
+        play();
       }
       userPaused = false;
       document.getElementById("test").style.backgroundColor = "white";
     } else {
-      beingPaused++;
-      parentAnimation.pause();
+      console.log("animPause is pausing");
+      pause();
       userPaused = true;
       document.getElementById("test").style.backgroundColor = "yellow";
     }
@@ -375,8 +389,8 @@ function animPause(){
 // Create elements at appropriate locations and flash the elements for
 // manual testing.
 function flashing(test) {
-  beingPaused++;
-  parentAnimation.pause();
+  console.log("flashing is pausing");
+  pause();
   var type = test.object.nodeName;
 
   // Create a new object of the same type as the thing being tested.
@@ -448,9 +462,9 @@ function flashCleanUp(victim){
     } else {
       victim.parentNode.removeChild(victim);
       if (document.animationTimeline.children[0].iterationTime
-          < document.animationTimeline.children[0].animationDuration - 0.01){
-        beingPaused--;
-        if(beingPaused == 0) parentAnimation.play();
+          <= document.animationTimeline.children[0].animationDuration){
+        console.log("flashCleanUp is playing");
+        play();
       }
     }
   }, pauseTime);
@@ -581,6 +595,10 @@ function assert_transform(object, target, message){
   }
 }
 
+function getBeingPaused(){
+  return beingPaused;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //  Exposing functions to be accessed externally                             //
 ///////////////////////////////////////////////////////////////////////////////
@@ -595,4 +613,6 @@ window.setState = setState;
 window.startSlide = startSlide;
 window.moveSlide = moveSlide;
 window.stopSlide = stopSlide;
+
+window.getBeingPaused = getBeingPaused;
 })();
