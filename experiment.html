@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<style>
+.anim {
+  fill: lightsteelblue;
+}
+.divvy {
+  left: 0px;
+  top: 0px;
+  width: 200px;
+  height: 24px;
+  background-color: lightsteelblue;
+  position: relative;
+}
+.testBox {
+  left: 0px;
+  top: 0px;
+  position: absolute;
+  height: 300px;
+  width: 1000px;
+  border-width: 0px;
+}
+
+.flashBox {
+  left: 0px;
+  top: 0px;
+  height: 300px;
+  width: 1000px;
+  position: absolute;
+  border-width: 0px;
+}
+
+.flash {
+  left: 100px;
+  top: 100px;
+  width: 200px;
+  height: 24px;
+  background-color: red;
+  position: absolute;
+  border-bottom: solid white 1px;
+}
+
+.anim {
+  fill: lightsteelblue;
+}
+
+</style>
+
+<div id="test" class="testBox">
+  <svg height="200px">
+    <circle class="anim" cx="50px" cy="100px" r="50px"></circle>
+  </svg>
+	<div class="divvy"></div>
+</div>
+
+<div id="test" class="flashBox">
+  <svg height="200px">
+    <circle class="anim" cx="50px" cy="100px" r="50px"></circle>
+  </svg>
+  <div class="divvy"></div>
+</div>
+
+<script>
+// Creates a deep copy
+function clone(parent){
+  var cparent = copy(parent);
+  var children = getChildren(parent);
+  for(var x = 0; x < children.length; x++){
+    var childTree = clone(children[x]);
+    cparent.appendChild(childTree);
+  }
+  return cparent;
+}
+
+function getChildren(parent){
+  var children = [];
+  var child = parent.childNodes;
+  for(var i = 0; i < child.length; i++){
+    if(child[i].nodeType == 1) children.push(child[i]);
+  }
+  return children;
+}
+
+function copy(element){
+  newElement = document.createElement('div');
+  // Apply the style from the passed in element to the knew one
+  newElement.style.cssText = getComputedStyle(element, null).cssText;
+  return newElement;
+}
+</script>

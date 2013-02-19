@@ -112,7 +112,7 @@ function generate(){
       for(var j in checks[x].properties){
         var p = checks[x].properties[j];
         var value = isSVG ? props[p].value : props[p];
-        propsPrint += p + ":'" + value + "'";
+        propsPrint += "'"+ p + "':'" + value + "'";
         if (j < checks[x].properties.length -1) propsPrint += ",";
       }
       propsPrint += "}";

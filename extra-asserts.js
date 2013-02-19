@@ -50,7 +50,7 @@ var beingPaused = 0;
 var userPaused = false;
 
 function testRecord(test, object, targets, time, message, cssStyle,
-                    offsets, isRefTest, epsilon){
+                    offsets, isRefTest){
   this.test = test;
   this.object = object;
   this.targets = targets;
@@ -59,7 +59,6 @@ function testRecord(test, object, targets, time, message, cssStyle,
   this.cssStyle = cssStyle;
   this.offsets = offsets;
   this.isRefTest = isRefTest;
-  this.epsilon = epsilon;
 }
 
 // Call this function before setting up any checks.
@@ -138,12 +137,11 @@ function setState(newState){
 }
 
 // Adds each test to a list to be processed when runTests is called.
-function check(object, targets, time, message, epsilon){
+function check(object, targets, time, message){
   if(testPacket.length == 0) reparent();
   // Create new async test
   var test = async_test(message);
   test.timeout_length = testTimeout;
-  if(epsilon === undefined) epsilon = defaultEpsilon;
 
   // Store the inital css style of the animated object so it can be
   // used for manual flashing.
@@ -156,14 +154,14 @@ function check(object, targets, time, message, epsilon){
     // Generate a test for each time you want to check the objects.
     for (var x = 0; x < maxTime/time; x++){
       var temp = new testRecord(test, object, targets, time * x, "Property "
-          + targets + " is not satisfied", css, offsets, true, epsilon);
+          + targets + " is not satisfied", css, offsets, true);
       testPacket.push(temp);
     }
     var temp = new testRecord(test, object, targets, time * x, "Property "
-        + targets + " is not satisfied", css, offsets, "Last refTest", epsilon);
+        + targets + " is not satisfied", css, offsets, "Last refTest");
     testPacket.push(temp);
   } else testPacket.push(new testRecord(test, object, targets, time, "Property "
-        + targets + " is not satisfied", css, offsets, false, epsilon));
+        + targets + " is not satisfied", css, offsets, false));
 }
 
 // Helper function which gets the current absolute position of an object.
@@ -235,6 +233,7 @@ function testTimeSort(a,b) { return(a.time - b.time) };
 function testRunner(index){
   var currTest = testPacket[testIndex][0];
   var animLength = parentAnimation.animationDuration;
+  var stopTestRunner = false;
   if (currTest.time > animLength) currTest.time = animLength;
   // Forces the frame closest to the test to be exactly the test time
   if (currTest.time < parentAnimation.iterationTime + framePeriod){
@@ -242,10 +241,12 @@ function testRunner(index){
     beingPaused++;
     parentAnimation.pause();
     window.webkitRequestAnimationFrame(function(){runManualTest();});
+    // We've just scheduled the last test so kill the testRunner
+    if(testIndex == testPacket.length - 1) stopTestRunner = true;
   }
-  if (testIndex < testPacket.length){
+  if (testIndex < testPacket.length && !stopTestRunner){
       window.webkitRequestAnimationFrame(function(){testRunner(index);});
-  } else done();
+  }
 }
 
 function runManualTest(){
@@ -260,6 +261,7 @@ function runManualTest(){
   testIndex++;
   beingPaused--;
   if(beingPaused == 0) parentAnimation.play();
+  if(testIndex == testPacket.length) done();
 }
 
 function autoTestRunner(){
@@ -436,7 +438,6 @@ function assert_properties(test){
   var object = test.object;
   var targets = test.targets;
   var message = test.message;
-  var epsilon = test.epsilon;
   var time = document.animationTimeline.children[0].iterationTime;
   if (time == null) time = 0;
 
@@ -491,7 +492,7 @@ function assert_properties(test){
           c = c.split(" ");
           for (var x in t){
             test.test.step(function (){
-              assert_approx_equals(Number(c[x]), Number(t[x]), epsilon, "At time " + time + ", " + propName +
+              assert_equals(Number(c[x]), Number(t[x]), "At time " + time + ", " + propName +
                   " is not correct. Target: " + tar + " Current state: " + curr);
             });
           }
