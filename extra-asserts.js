@@ -46,7 +46,8 @@ var defaultEpsilon = 0;
 var framePeriod = 0.016;
 // Stops tests being triggered when the user is scrubbing
 var scrubbing = false;
-
+// Allows users to input the desired animation time
+var userInput = false;
 
 // To get user pausing working correctly
 var beingPaused = 0;
@@ -85,6 +86,24 @@ function setupTests(timeouts){
   var optionBar = document.createElement('div');
   optionBar.id = "options";
 
+  var pausePlayButton = document.createElement("button");
+  pausePlayButton.setAttribute("type", "button");
+  pausePlayButton.setAttribute("onclick", "animPause()");
+  pausePlayButton.innerHTML = "Pause";
+  pausePlayButton.id = "pausePlayButton";
+
+  var skipFrameForward = document.createElement("button");
+  skipFrameForward.setAttribute("type", "button");
+  skipFrameForward.setAttribute("onclick", "skipFrameForward()");
+  skipFrameForward.innerHTML = ">";
+  skipFrameForward.id = "skipFrameForward";
+
+  var skipFrameBack = document.createElement("button");
+  skipFrameBack.setAttribute("type", "button");
+  skipFrameBack.setAttribute("onclick", "skipFrameBack()");
+  skipFrameBack.innerHTML = "<";
+  skipFrameBack.id = "skipFrameBack";
+
   var timeBar = document.createElement('div');
   timeBar.id = "timeBar";
   timeBar.addEventListener('mousedown', startSlide, false);
@@ -104,14 +123,25 @@ function setupTests(timeouts){
   button.innerHTML = "Restart";
   var timeOfAnimation = document.createElement('div');
   timeOfAnimation.id = "animViewerText";
-  timeOfAnimation.innerHTML = "Current animation time: 0.00";
+  timeOfAnimation.innerHTML = "Current animation time:";
+  var setTime = document.createElement("input");
+  setTime.id = "setTime";
+  setTime.setAttribute("type", "text");
+  setTime.value = "0.00";
+  setTime.setAttribute("onfocus", "letUserInput()");
+  setTime.setAttribute("onblur", "setTime()");
+
   document.body.appendChild(optionBar);
   optionBar.appendChild(timeBar);
   timeBar.appendChild(slider);
+  optionBar.appendChild(pausePlayButton);
+  optionBar.appendChild(skipFrameBack);
+  optionBar.appendChild(skipFrameForward);
   optionBar.appendChild(select);
   optionBar.appendChild(button);
   optionBar.appendChild(hideFlash);
   optionBar.appendChild(timeOfAnimation);
+  optionBar.appendChild(setTime);
 
   // Generate the log div
   var log = document.createElement('div');
@@ -146,6 +176,26 @@ function setupTests(timeouts){
   setup({ explicit_done: true, timeout: frameworkTimeout, explicit_timeout: true});
 }
 
+function setTime(){
+  parentAnimation.currentTime = document.getElementById("setTime").value;
+  resetTestIndex();
+  userInput = false;
+  play();
+}
+
+function letUserInput(){
+  pause();
+  userInput = true;
+}
+
+function skipFrameForward(){
+  parentAnimation.currentTime = parentAnimation.iterationTime + framePeriod;
+}
+
+function skipFrameBack(){
+  parentAnimation.currentTime = parentAnimation.iterationTime - framePeriod;
+}
+
 function startSlide(event){
   scrubbing = true;
   var bar = document.getElementById("timeBar");
@@ -171,16 +221,19 @@ function stopSlide(event){
     bar.removeEventListener('mousemove', moveSlide, false);
     document.getElementById("slider").style.width = (setPercent * 100) + '%';
     parentAnimation.currentTime = setPercent * parentAnimation.animationDuration;
-    // Move testIndex to the right location
-    // This not only re runs flashes that already have been played but also
-    // stop flashes that have been skipped not to show
-    for (testIndex = 0; testPacket[testIndex][0].time < parentAnimation.iterationTime &&
-        testIndex < testPacket.length; testIndex++);
-
+    resetTestIndex();
     console.log("stopSlide is playing");
     play();
     scrubbing = false;
   }
+}
+
+// Move testIndex to the right location
+// This not only re runs flashes that already have been played but also
+// stop flashes that have been skipped not to show
+function resetTestIndex(){
+  for (testIndex = 0; testPacket[testIndex][0].time < parentAnimation.iterationTime &&
+      testIndex < testPacket.length; testIndex++);
 }
 
 // Allows tutorial harness to edit state
@@ -263,13 +316,15 @@ function runTests(){
 }
 
 function animTimeViewer(){
-  var currTime = document.animationTimeline.children[0].iterationTime;
-  if (currTime != null) currTime = currTime.toFixed(2);
-  else currTime = 0.00;
-  var object = document.getElementById("animViewerText");
-  object.innerHTML = "Current animation time " + currTime;
-  var slider = document.getElementById("slider");
-  slider.style.width = (currTime / parentAnimation.animationDuration) * 100 + "%";
+  if(!userInput){
+    var currTime = parentAnimation.iterationTime;
+    if (currTime != null) currTime = currTime.toFixed(2);
+    else currTime = 0.00;
+    var object = document.getElementById("setTime");
+    object.value = currTime;
+    var slider = document.getElementById("slider");
+    slider.style.width = (currTime / parentAnimation.animationDuration) * 100 + "%";
+  }
   window.webkitRequestAnimationFrame(function(){ animTimeViewer(); });
 }
 
@@ -297,24 +352,21 @@ function sortTests(){
 function testTimeSort(a,b) { return(a.time - b.time) };
 
 function testRunner(index){
-  var currTest = testPacket[testIndex][0];
-  var animLength = parentAnimation.animationDuration;
-  var stopTestRunner = false;
-  if (currTest.time > animLength) currTest.time = animLength;
-  // Forces the frame closest to the test to be exactly the test time
-  if(!scrubbing){
-    if (currTest.time < parentAnimation.iterationTime + framePeriod){
-      parentAnimation.currentTime = currTest.time;
-      console.log("testRunner is pausing");
-      pause();
-      window.webkitRequestAnimationFrame(function(){runManualTest();});
-      // We've just scheduled the last test so kill the testRunner
-      if(testIndex == testPacket.length - 1) stopTestRunner = true;
+  if(testIndex < testPacket.length){
+    var currTest = testPacket[testIndex][0];
+    var animLength = parentAnimation.animationDuration;
+    if (currTest.time > animLength) currTest.time = animLength;
+    // Forces the frame closest to the test to be exactly the test time
+    if(!scrubbing){
+      if (currTest.time < parentAnimation.iterationTime + framePeriod){
+        parentAnimation.currentTime = currTest.time;
+        console.log("testRunner is pausing");
+        pause();
+        window.webkitRequestAnimationFrame(function(){runManualTest();});
+      }
     }
   }
-  if (testIndex < testPacket.length && !stopTestRunner){
-      window.webkitRequestAnimationFrame(function(){testRunner(index);});
-  }
+  window.webkitRequestAnimationFrame(function(){testRunner(index);});
 }
 
 function runManualTest(){
@@ -368,17 +420,20 @@ function restart(){
 
 // Makes it easier to see whats going on in the test.
 function animPause(){
+  var pausePlayButton = document.getElementById("pausePlayButton");
   if(state == "Manual"){
     if (userPaused){
       if (document.animationTimeline.children[0].iterationTime
           < document.animationTimeline.children[0].animationDuration){
         console.log("animPause is playing");
+        pausePlayButton.innerHTML = "Pause";
         play();
       }
       userPaused = false;
       document.getElementById("test").style.backgroundColor = "white";
     } else {
       console.log("animPause is pausing");
+      pausePlayButton.innerHTML = "Play";
       pause();
       userPaused = true;
       document.getElementById("test").style.backgroundColor = "yellow";
@@ -613,6 +668,11 @@ window.setState = setState;
 window.startSlide = startSlide;
 window.moveSlide = moveSlide;
 window.stopSlide = stopSlide;
+
+window.skipFrameForward = skipFrameForward;
+window.skipFrameBack = skipFrameBack;
+window.setTime = setTime;
+window.letUserInput = letUserInput;
 
 window.getBeingPaused = getBeingPaused;
 })();
