@@ -36,14 +36,17 @@ var testPacket = [];
 // How long to show each manual check for.
 var pauseTime = 1000;
 // How long it takes an individual test to timeout.
-var testTimeout = 20000;
+var testTimeout = 2000000;
 // How long it takes for the whole test system to timeout.
-var frameworkTimeout = 20000;
+var frameworkTimeout = 2000000;
 // The default error margin if none is specified
 // It's currently 12 as it works well with most average speed animations
 var defaultEpsilon = 0;
 // The time between each frame render in seconds
 var framePeriod = 0.016;
+// Stops tests being triggered when the user is scrubbing
+var scrubbing = false;
+
 
 // To get user pausing working correctly
 var beingPaused = 0;
@@ -59,6 +62,8 @@ function testRecord(test, object, targets, time, message, cssStyle,
   this.cssStyle = cssStyle;
   this.offsets = offsets;
   this.isRefTest = isRefTest;
+  // Stops test being re-asserted during replay
+  this.complete = false;
 }
 
 // Call this function before setting up any checks.
@@ -79,6 +84,14 @@ function setupTests(timeouts){
   // Generate options bar
   var optionBar = document.createElement('div');
   optionBar.id = "options";
+
+  var timeBar = document.createElement('div');
+  timeBar.id = "timeBar";
+  timeBar.addEventListener('mousedown', startSlide, false);
+  timeBar.addEventListener('mouseup', stopSlide, false);
+  var slider = document.createElement('div');
+  slider.id = "slider";
+
   var select = document.createElement("select");
   select.setAttribute("id", "runType");
   var hideFlash = document.createElement("button");
@@ -93,10 +106,12 @@ function setupTests(timeouts){
   timeOfAnimation.id = "animViewerText";
   timeOfAnimation.innerHTML = "Current animation time: 0.00";
   document.body.appendChild(optionBar);
-  document.getElementById("options").appendChild(select);
-  document.getElementById("options").appendChild(button);
-  document.getElementById("options").appendChild(hideFlash);
-  document.getElementById("options").appendChild(timeOfAnimation);
+  optionBar.appendChild(timeBar);
+  timeBar.appendChild(slider);
+  optionBar.appendChild(select);
+  optionBar.appendChild(button);
+  optionBar.appendChild(hideFlash);
+  optionBar.appendChild(timeOfAnimation);
 
   // Generate the log div
   var log = document.createElement('div');
@@ -129,6 +144,43 @@ function setupTests(timeouts){
   // Setup the pause animation function
   testBoxCopy.setAttribute("onclick", "animPause()");
   setup({ explicit_done: true, timeout: frameworkTimeout});
+}
+
+function startSlide(event){
+  scrubbing = true;
+  var bar = document.getElementById("timeBar");
+  beingPaused++;
+  parentAnimation.pause();
+  var setPercent = ((((event.clientX - bar.offsetLeft) / bar.offsetWidth)).toFixed(2));
+  bar.addEventListener('mousemove', moveSlide, false);
+  document.getElementById("slider").style.width = (setPercent * 100) + '%';
+  parentAnimation.currentTime = setPercent * parentAnimation.animationDuration;
+}
+
+function moveSlide(event){
+  var bar = document.getElementById("timeBar");
+  var setPercent = ((((event.clientX - bar.offsetLeft) / bar.offsetWidth)).toFixed(2));
+  document.getElementById("slider").style.width = (setPercent * 100) + '%';
+  parentAnimation.currentTime = setPercent * parentAnimation.animationDuration;
+}
+
+function stopSlide(event){
+  if(scrubbing){
+    var bar = document.getElementById("timeBar");
+    var setPercent = ((((event.clientX - bar.offsetLeft) / bar.offsetWidth)).toFixed(2));
+    bar.removeEventListener('mousemove', moveSlide, false);
+    document.getElementById("slider").style.width = (setPercent * 100) + '%';
+    parentAnimation.currentTime = setPercent * parentAnimation.animationDuration;
+    // Move testIndex to the right location
+    // This not only re runs flashes that already have been played but also
+    // stop flashes that have been skipped not to show
+    for (testIndex = 0; testPacket[testIndex][0].time < parentAnimation.iterationTime &&
+        testIndex < testPacket.length; testIndex++);
+
+    beingPaused--;
+    if(beingPaused == 0) parentAnimation.play();
+    scrubbing = false;
+  }
 }
 
 // Allows tutorial harness to edit state
@@ -204,6 +256,8 @@ function animTimeViewer(){
   else currTime = 0.00;
   var object = document.getElementById("animViewerText");
   object.innerHTML = "Current animation time " + currTime;
+  var slider = document.getElementById("slider");
+  slider.style.width = (currTime / parentAnimation.animationDuration) * 100 + "%";
   window.webkitRequestAnimationFrame(function(){ animTimeViewer(); });
 }
 
@@ -236,13 +290,15 @@ function testRunner(index){
   var stopTestRunner = false;
   if (currTest.time > animLength) currTest.time = animLength;
   // Forces the frame closest to the test to be exactly the test time
-  if (currTest.time < parentAnimation.iterationTime + framePeriod){
-    parentAnimation.currentTime = currTest.time;
-    beingPaused++;
-    parentAnimation.pause();
-    window.webkitRequestAnimationFrame(function(){runManualTest();});
-    // We've just scheduled the last test so kill the testRunner
-    if(testIndex == testPacket.length - 1) stopTestRunner = true;
+  if(!scrubbing){
+    if (currTest.time < parentAnimation.iterationTime + framePeriod){
+      parentAnimation.currentTime = currTest.time;
+      beingPaused++;
+      parentAnimation.pause();
+      window.webkitRequestAnimationFrame(function(){runManualTest();});
+      // We've just scheduled the last test so kill the testRunner
+      if(testIndex == testPacket.length - 1) stopTestRunner = true;
+    }
   }
   if (testIndex < testPacket.length && !stopTestRunner){
       window.webkitRequestAnimationFrame(function(){testRunner(index);});
@@ -252,9 +308,11 @@ function testRunner(index){
 function runManualTest(){
   for (var i = 0; i < testPacket[testIndex].length; i++){
     var currTest = testPacket[testIndex][i];
-    assert_properties(currTest);
-    if(currTest.isRefTest == "Last refTest" || currTest.isRefTest == false){
-      currTest.test.done();
+    if(!test.complete){
+      assert_properties(currTest);
+      if(currTest.isRefTest == "Last refTest" || currTest.isRefTest == false){
+        currTest.test.done();
+      }
     }
     if(currTest.isRefTest == false) flashing(currTest);
   }
@@ -384,7 +442,7 @@ function flashing(test) {
 
 function flashCleanUp(victim){
   setTimeout(function() {
-    if(userPaused){
+    if(userPaused && !scrubbing){
       // Since the user has paused, keep any displayed divs up and set new timeout
       flashCleanUp(victim);
     } else {
@@ -404,7 +462,6 @@ function toggleFlash(){
   for(var i = 0; i < elements.length; i++) allFlash.push(elements[i]);
   elements = document.getElementsByClassName("flash");
   for(var i = 0; i < elements.length; i++) allFlash.push(elements[i]);
-  console.log(allFlash);
 
   for(var i in allFlash){
     var type = allFlash[i].nodeName;
@@ -501,6 +558,7 @@ function assert_properties(test){
     }
   }
   tempOb.parentNode.removeChild(tempOb);
+  test.complete = true;
 }
 
 // Deals with the svg transforms special case.
@@ -533,4 +591,8 @@ window.restart = restart;
 window.toggleFlash = toggleFlash;
 window.animPause = animPause;
 window.setState = setState;
+
+window.startSlide = startSlide;
+window.moveSlide = moveSlide;
+window.stopSlide = stopSlide;
 })();
