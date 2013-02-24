@@ -1,0 +1,51 @@
+<!--
+Copyright 2012 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<!DOCTYPE html>
+<style>
+.anim {
+  fill: lightsteelblue;
+  background-color: lightsteelblue;
+  height: 50px;
+  position: absolute;
+}
+
+#a {
+  left:0px;
+  width: 50px;
+}
+
+</style>
+
+<div class="anim" id="a"></div>
+
+<script src="../../web-animations-js/web-animation.js"></script>
+<script>
+
+var dt = document.timeline;
+
+// 50px -> 0px linear, 0% -> 50% (0px -> 400px quadratic)
+var a = new Animation(document.querySelector("#a"), {left: "500px"}, 2);
+var player = dt.createPlayer(a);
+
+setTimeout(function(){
+  console.log(player._getItemsInEffect());
+  var x = player._getItemsInEffect();
+  console.log(x[0].iterationTime);
+  console.log(x[0].animationTime);
+  x[0].currentTime = 0.5;
+},1000);
+</script>
