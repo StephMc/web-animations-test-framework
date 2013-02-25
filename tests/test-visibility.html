@@ -20,7 +20,7 @@ limitations under the License.
 body {
   margin: 0px;
 }
-.test {
+.anim {
   height: 50px;
   background: lightsteelblue;
 }
@@ -50,7 +50,7 @@ for (var start in states) {
       testContainer.appendChild(expectation);
     }
     var testElement = document.createElement('div');
-    testElement.classList.add('test');
+    testElement.classList.add('anim');
     if (end == 'hidden' || end == 'collapse') {
       testElement.classList.add('red');
     }
