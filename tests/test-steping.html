@@ -71,10 +71,9 @@ Written by Steph McArthur
 setupTests();
 
 var elems = document.querySelectorAll(".anim");
-var anims = [];
 for (var i = 0; i < elems.length; i++) {
   var element = elems[i];
-  anims[i] = new Animation(element, {left: "600px"}, {startDelay: 1, duration: 2, timingFunction: element.textContent});
+  document.timeline.createPlayer(new Animation(element, {left: "600px"}, {startDelay: 1, duration: 2, timingFunction: element.textContent}));
 }
 var buffer = 0.05;
 check(elems[0], {"left":"600px"}, 1+buffer, "Div 1: 1 sec");

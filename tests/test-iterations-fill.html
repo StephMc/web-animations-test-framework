@@ -113,8 +113,8 @@ function sampleFunc(timeFraction, iteration, target) {
 for (var i = 0; i < fillModes.length; i++) {
   var divs = document.querySelectorAll(categories[i]);
   for (var j = 0; j < divs.length; j++) {
-    new Animation(divs[j], {left: ["100px", "200px"]}, {startDelay: 1, duration: 1, iterationCount: 2, fillMode: fillModes[i], playbackRate: 0.8}, groups[j], 1);
-    new Animation(divs[j], {sample: sampleFunc}, {startDelay: 1, duration: 1, iterationCount: 2, fillMode: fillModes[i], playbackRate: 0.8}, groups[j], 1);
+    document.timeline.createPlayer(new Animation(divs[j], {left: ["100px", "200px"]}, {startDelay: 1, duration: 1, iterationCount: 2, fillMode: fillModes[i], playbackRate: 0.8}, groups[j], 1));
+    document.timeline.createPlayer(new Animation(divs[j], {sample: sampleFunc}, {startDelay: 1, duration: 1, iterationCount: 2, fillMode: fillModes[i], playbackRate: 0.8}, groups[j], 1));
 	}
 }
 

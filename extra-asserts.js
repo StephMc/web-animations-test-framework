@@ -288,7 +288,6 @@ function pause(){
 function play(){
   beingPaused = beingPaused === 0 ? 0 : beingPaused - 1;
   for(var x = 0; x < document.timeline.getPlayers().length; x++){
-    console.log(document.timeline.getPlayers()[x]);
     //if(externallyPaused[x] === false || externallyPaused[x] === undefined){
       if(beingPaused === 0) document.timeline.getPlayers()[x].unpause();
     //}
@@ -539,9 +538,13 @@ function flashing(test) {
   if (type == "DIV") {
     if (!seenTop){
       flash.style.top = getOffset(test.object).top + "px";
+    } else {
+      flash.style.top = parseInt(flash.style.top) + test.offsets["top"] + "px";
     }
     if (!seenLeft) {
       flash.style.left = getOffset(test.object).left + "px";
+    } else {
+      flash.style.left = parseInt(flash.style.left) + test.offsets["left"] + "px";
     }
   }
 

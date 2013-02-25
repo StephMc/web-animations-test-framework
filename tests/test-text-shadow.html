@@ -48,8 +48,8 @@ limitations under the License.
 <script>
 setupTests();
 var anim = document.getElementById("victim");
-new Animation(anim,
-    {'text-shadow': ['100px 100px red, 0px 100px 5px red', '0px 0px']}, {duration:2, startDelay:1});
+document.timeline.createPlayer(new Animation(anim,
+    {'text-shadow': ['100px 100px red, 0px 100px 5px red', '0px 0px']}, {duration:2, startDelay:1}));
 
 // There's a strange css feature which sometimes will show the color name not the rbga.
 // The quick solution is to pass in rgba instead of color name

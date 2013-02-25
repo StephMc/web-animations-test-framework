@@ -79,17 +79,17 @@ var animFunc = new PathAnimationFunction(
     document.querySelector('#path1'));
 animFunc.rotate = true;
 
-var anim = new Animation(document.querySelector("#anim1"),
+document.timeline.createPlayer(new Animation(document.querySelector("#anim1"),
     animFunc,
-    {duration: 2, iterationCount: 2});
+    {duration: 2, iterationCount: 2}));
 
 var animFunc2 = new PathAnimationFunction(
     document.querySelector('#path2'));
 animFunc2.rotate = true;
 
-var anim2 = new Animation(document.querySelector("#anim2"),
+document.timeline.createPlayer(new Animation(document.querySelector("#anim2"),
     animFunc2,
-    {duration: 2, iterationCount: 2});
+    {duration: 2, iterationCount: 2}));
 
 check(document.querySelectorAll('#anim1')[0],{'-webkit-transform':'matrix(0.7071067811865476, 0.7071067811865475, -0.7071067811865475, 0.7071067811865476, 87.5, 87.5)'},0);
 check(document.querySelectorAll('#anim2')[0],{'-webkit-transform':'matrix(0.3717855151544059, 0.9283186579625409, -0.9283186579625409, 0.3717855151544059, 87.5, 237.5)'},0);
