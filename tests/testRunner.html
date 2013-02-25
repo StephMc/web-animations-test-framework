@@ -102,9 +102,11 @@ function logResults (results){
   newTestDiv.innerHTML = tests[currentTest];
   newTestDiv.onclick = function(){ showDetails(this); };
   var grade = "pass";
+  console.log("popks");
   for (var x in results){
     if (results[x].status != 0) grade = "fail";
   }
+  sendResultsToServer(grade);
 
   var newResultsDiv = document.createElement('div');
   if (grade == "pass"){
@@ -128,6 +130,16 @@ function logResults (results){
   }
   newResultsDiv.style.display = "none";
   newTestDiv.appendChild(newResultsDiv);
+}
+
+function sendResultsToServer(result){
+  console.log("pop");
+  var xmlhttp;
+  // code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp = new XMLHttpRequest();
+  xmlhttp.open("GET","../../test.php?t=" + result,true);
+  xmlhttp.send();
+  console.log(result);
 }
 
 function showDetails(object){
