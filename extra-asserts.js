@@ -27,7 +27,7 @@ var runInAutoMode;
 // Holds which test packet we are up to.
 var testIndex = 0;
 // How long the test is
-var testLength = 4;
+var testLength = 0;
 // Extra-asserts current time
 var testCurrentTime = 0;
 //Each index holds all the tests that occur at the same time
@@ -351,6 +351,11 @@ function runTests(){
   for (var x in checkStack){
     var c = checkStack[x];
     checkProcessor(c.object, c.targets, c.time, c.testName);
+  }
+  for (var x = 0; x < document.timeline.getPlayers().length; x++){
+    var currPlayer = document.timeline.getPlayers()[x];
+    testLength = currPlayer._timedItem.animationDuration > testLength ?
+                  currPlayer._timedItem.animationDuration : testLength;
   }
 
   requestFrame(function(){ animTimeViewer(document.timeline.currentTime()); });
