@@ -29,7 +29,7 @@ Written by Steph McArthur
 }
 
 .testBox {
-  height: 250px;
+  height: 300px;
 }
 
 </style>
@@ -58,9 +58,11 @@ Written by Steph McArthur
 <script>
 setupTests();
 
-new Animation(document.querySelector(".anim"), {left: "600px"}, {duration: 4});
-new Animation(document.querySelectorAll(".anim")[1], {top: "200px"}, {duration: 2});
-new Animation(document.querySelectorAll(".anim")[2], {top: "200px", left:"600px"}, {duration: 4});
+var dt = document.timeline;
+
+dt.createPlayer(new Animation(document.querySelector(".anim"), {left: "600px"}, {duration: 4}));
+dt.createPlayer(new Animation(document.querySelectorAll(".anim")[1], {top: "200px"}, {duration: 2}));
+dt.createPlayer(new Animation(document.querySelectorAll(".anim")[2], {top: "200px", left:"600px"}, {duration: 4}));
 
 check(document.querySelectorAll('.anim')[0],{top:'0px',left:'0px'},0);
 check(document.querySelectorAll('.anim')[1],{top:'0px',left:'0px'},0);
