@@ -52,8 +52,8 @@ setupTests();
 
 var rect = document.querySelector(".anim");
 var fish = document.querySelector(".divvy");
-new Animation(rect, {cx: "400px"}, 1);
-new Animation(fish, {left: "400px"}, 1);
+document.timeline.createPlayer(new Animation(rect, {cx: "400px"}, 1));
+document.timeline.createPlayer(new Animation(fish, {left: "400px"}, 1));
 
 check(document.querySelectorAll('.divvy')[0],{left:'0px'},0);
 check(document.querySelectorAll('.anim')[0],{cx:'50px'},0);

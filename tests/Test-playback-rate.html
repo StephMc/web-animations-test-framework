@@ -73,8 +73,8 @@ var topObjects = document.querySelectorAll(".top");
 var bottomObjects = document.querySelectorAll(".bottom");
 
 for (var i = 0; i < topObjects.length; i++) {
-  new Animation(topObjects[i], {left: ["100px", "600px"]}, {duration: 2*(i + 1), playbackRate: i + 1 });
-  new Animation(bottomObjects[i], {left: ["100px", "600px"]}, {duration: 2});
+  document.timeline.createPlayer(new Animation(topObjects[i], {left: ["100px", "600px"]}, {duration: 2*(i + 1), playbackRate: i + 1 }));
+  document.timeline.createPlayer(new Animation(bottomObjects[i], {left: ["100px", "600px"]}, {duration: 2}));
 }
 
 for (var i = 0; i < topObjects.length; i++) {

@@ -56,24 +56,23 @@ var props = [];
 
 for (var i = 0; i < elems.length; i++) {
   var element = elems[i];
-  new Animation(element, {left: ["0px", "200px"]}, 1, new ParGroup([], {iterationCount: element.textContent}));
+  document.timeline.createPlayer(new Animation(element, {left: ["0px", "200px"]}, 1, new ParGroup([], {iterationCount: element.textContent})));
 }
 
 for (var i = 0; i < elems.length; i++) {
   check(elems[i], {"left":"0px"}, 0, "Start pos check: Object "+i);
 }
 
-var buffer = 0;
-check(elems[0], {"left":"200px"}, 1+buffer, "repetition pos check: Object "+0);
-check(elems[1], {"left":"0px"}, 1+buffer, "repetition pos check: Object "+1);
-check(elems[2], {"left":"0px"}, 1+buffer, "repetition pos check: Object "+2);
+check(elems[0], {"left":"200px"}, 1, "repetition pos check: Object "+0);
+check(elems[1], {"left":"0px"}, 1, "repetition pos check: Object "+1);
+check(elems[2], {"left":"0px"}, 1, "repetition pos check: Object "+2);
 
-check(elems[0], {"left":"200px"}, 2+buffer, "repetition 2 pos check: Object "+0);
-check(elems[1], {"left":"200px"}, 2+buffer, "repetition 2 pos check: Object "+1);
-check(elems[2], {"left":"0px"}, 2+buffer, "repetition 2 pos check: Object "+2);
+check(elems[0], {"left":"200px"}, 2, "repetition 2 pos check: Object "+0);
+check(elems[1], {"left":"200px"}, 2, "repetition 2 pos check: Object "+1);
+check(elems[2], {"left":"0px"}, 2, "repetition 2 pos check: Object "+2);
 
 for (var i = 0; i < elems.length; i++) {
-  check(elems[i], {"left":"200px"}, 3+buffer, "End pos check: Object "+i);
+  check(elems[i], {"left":"200px"}, 3, "End pos check: Object "+i);
 }
 
 runTests();

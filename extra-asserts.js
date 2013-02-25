@@ -22,12 +22,14 @@
 (function() {
 // For the results to be accessed when test is in an iframe.
 var testResults = undefined;
-// The parGroup all animations need to be added to to achieve 'global' pause
-var parentAnimation;
 // Boolean flag for whether the program is running in automatic mode
 var runInAutoMode;
 // Holds which test packet we are up to.
 var testIndex = 0;
+// How long the test is
+var testLength = 0;
+// Extra-asserts current time
+var testCurrentTime = 0;
 //Each index holds all the tests that occur at the same time
 var testPacket = [];
 // To store checks before processing
@@ -60,6 +62,7 @@ var requestFrame = window.requestAnimationFrame ||
 
 // To get user pausing working correctly
 var beingPaused = 0;
+var externallyPaused = [];
 var userPaused = false;
 
 function testRecord(test, object, targets, time, cssStyle,
@@ -211,32 +214,32 @@ function letUserInput(){
 // Applies the inputted time to the animation and updates the testIndex so it
 // points to the next set of tests to run.
 function setTime(){
-  parentAnimation.currentTime = document.getElementById("setTime").value;
+  setTestCurrentTime(Number(document.getElementById("setTime").value));
   resetTestIndex();
   userInput = false;
   play();
 }
 
 function skipFrameForward(){
-  parentAnimation.currentTime = parentAnimation.iterationTime + framePeriod;
+  setTestCurrentTime(testCurrentTime + framePeriod);
 }
 
 function skipFrameBack(){
-  parentAnimation.currentTime = parentAnimation.iterationTime - framePeriod;
+  setTestCurrentTime(testCurrentTime - framePeriod);
 }
 
 // Start editing the animation time with the slider. It disables the tests so
 // they won't trigger whilst this is happening.
 function startSlide(event){
   scrubbing = true;
-  var bar = document.getElementById("timeBar");
   pause();
+  var bar = document.getElementById("timeBar");
   var setPercent =
       ((event.clientX - bar.offsetLeft) / bar.offsetWidth).toFixed(2);
   bar.addEventListener('mousemove', moveSlide, false);
   bar.removeEventListener('mousedown', startSlide, false);
   document.getElementById("slider").style.width = (setPercent * 100) + '%';
-  parentAnimation.currentTime = setPercent * parentAnimation.animationDuration;
+  setTestCurrentTime(setPercent * testLength);
 }
 
 // Updates the animation whilst the slider is moving
@@ -245,7 +248,7 @@ function moveSlide(event){
   var setPercent =
       ((event.clientX - bar.offsetLeft) / bar.offsetWidth).toFixed(2);
   document.getElementById("slider").style.width = (setPercent * 100) + '%';
-  parentAnimation.currentTime = setPercent * parentAnimation.animationDuration;
+  setTestCurrentTime(setPercent * testLength);
 }
 
 // Cleans up after scrubbing and re-enables the tests.
@@ -257,7 +260,7 @@ function stopSlide(event){
   bar.removeEventListener('mousemove', moveSlide, false);
   bar.addEventListener('mousedown', startSlide, false);
   document.getElementById("slider").style.width = (setPercent * 100) + '%';
-  parentAnimation.currentTime = setPercent * parentAnimation.animationDuration;
+  setTestCurrentTime(setPercent * testLength);
   resetTestIndex();
   play();
   scrubbing = false;
@@ -268,7 +271,7 @@ function stopSlide(event){
 // not to show.
 function resetTestIndex(){
   for (testIndex = 0;
-      testPacket[testIndex][0].time < parentAnimation.iterationTime &&
+      testPacket[testIndex][0].time < testCurrentTime &&
       testIndex < testPacket.length; testIndex++);
 }
 
@@ -277,12 +280,18 @@ function resetTestIndex(){
 // say to play again.
 function pause(){
   beingPaused++;
-  parentAnimation.pause();
+  for(var x in document.timeline.getPlayers()){
+    document.timeline.getPlayers()[x].pause();
+  }
 }
 
 function play(){
-  beingPaused--;
-  if(beingPaused == 0) parentAnimation.play();
+  beingPaused = beingPaused === 0 ? 0 : beingPaused - 1;
+  for(var x = 0; x < document.timeline.getPlayers().length; x++){
+    //if(externallyPaused[x] === false || externallyPaused[x] === undefined){
+      if(beingPaused === 0) document.timeline.getPlayers()[x].unpause();
+    //}
+  }
 }
 
 // Adds each test to a list to be processed when runTests is called.
@@ -311,9 +320,8 @@ function checkProcessor(object, targets, time, testName){
   offsets["top"] = getOffset(object).top - parseInt(css.top);
   offsets["left"] = getOffset(object).left- parseInt(css.left);
   if (targets.refTest){
-    var maxTime = parentAnimation.animationDuration;
     // Generate a test for each time you want to check the objects.
-    for (var x = 0; x < maxTime/time; x++){
+    for (var x = 0; x < testLength/time; x++){
       testPacket.push(new testRecord(test, object, targets, time * x, css,
           offsets, TestTypeEnum.IS_REF));
     }
@@ -338,24 +346,19 @@ function getOffset(el){
   return {top:y, left:x};
 }
 
-// Put all the animations into a par group to get around global pause issue.
-function reparent(){
-  var childList = [];
-  for (var i = 0; i < document.animationTimeline.children.length; i++) {
-    childList.push(document.animationTimeline.children[i]);
-  }
-  parentAnimation = new ParGroup(childList);
-}
-
 //Call this after lining up the tests with check
 function runTests(){
-  reparent();
   for (var x in checkStack){
     var c = checkStack[x];
     checkProcessor(c.object, c.targets, c.time, c.testName);
   }
+  for (var x = 0; x < document.timeline.getPlayers().length; x++){
+    var currPlayer = document.timeline.getPlayers()[x];
+    testLength = currPlayer._timedItem.animationDuration > testLength ?
+                  currPlayer._timedItem.animationDuration : testLength;
+  }
 
-  animTimeViewer();
+  requestFrame(function(){ animTimeViewer(document.timeline.currentTime()); });
   sortTests();
   if (runInAutoMode){
     pause();
@@ -365,17 +368,18 @@ function runTests(){
   }
 }
 
-function animTimeViewer(){
+function animTimeViewer(oldTime){
   if(!userInput){
-    var currTime = parentAnimation.iterationTime;
-    if (currTime != null) currTime = currTime.toFixed(2);
-    else currTime = 0.00;
+    if(beingPaused === 0) testCurrentTime += Number(document.timeline.currentTime() - oldTime);
+    if(testCurrentTime > testLength) testCurrentTime = testLength;
+    var displayTime = testCurrentTime.toFixed(2);
     var object = document.getElementById("setTime");
-    object.value = currTime;
+    object.value = displayTime;
     var slider = document.getElementById("slider");
-    slider.style.width = (currTime / parentAnimation.animationDuration) * 100 + "%";
+    slider.style.width = (testCurrentTime / testLength) * 100 + "%";
   }
-  requestFrame(animTimeViewer);
+  var currentTime = document.timeline.currentTime();
+  requestFrame(function(){ animTimeViewer(currentTime); });
 }
 
 function sortTests(){
@@ -401,16 +405,24 @@ function sortTests(){
 
 function testTimeSort(a,b) { return(a.time - b.time) };
 
+function setTestCurrentTime(time){
+  // Needs to take into account start time offsets
+  // For now assumes that everything starts at time zero
+  for (var x in document.timeline.getPlayers()){
+    document.timeline.getPlayers()[x].currentTime = time;
+  }
+  testCurrentTime = time;
+}
+
 function testRunner(){
   if(testIndex < testPacket.length){
     var currTest = testPacket[testIndex][0];
-    var animLength = parentAnimation.animationDuration;
-    if (currTest.time > animLength) currTest.time = animLength;
+    if (currTest.time > testLength) currTest.time = testLength;
     // Forces the frame closest to the test to be exactly the test time
     if(!scrubbing){
-      if (currTest.time < parentAnimation.iterationTime + framePeriod){
-        parentAnimation.currentTime = currTest.time;
+      if (currTest.time < testCurrentTime + framePeriod){
         pause();
+        setTestCurrentTime(currTest.time);
         requestFrame(runManualTest);
       }
     }
@@ -429,7 +441,7 @@ function runManualTest(){
     if(currTest.testType == TestTypeEnum.REGULAR) flashing(currTest);
   }
   testIndex++;
-  play()
+  play();
   if(testIndex == testPacket.length){
     done();
     timeout();
@@ -447,7 +459,7 @@ function autoTestRunner(){
   }
   if (testIndex < testPacket.length){
     var nextTest = testPacket[testIndex][0];
-    document.animationTimeline.children[0].currentTime = nextTest.time;
+    setTestCurrentTime(nextTest.time);
     testIndex++;
     requestFrame(autoTestRunner);
   } else {
@@ -472,9 +484,7 @@ function animPause(){
     pausePlayButton.innerHTML = "Pause";
     play();
     // Get the flashes ready to play again when the animation replays
-    console.log(parentAnimation.iterationTime);
-    console.log(parentAnimation.animationDuration);
-    if(parentAnimation.iterationTime == 0){
+    if(testCurrentTime == 0){
       testIndex = 0;
     }
     userPaused = false;
@@ -533,9 +543,13 @@ function flashing(test) {
   if (type == "DIV") {
     if (!seenTop){
       flash.style.top = getOffset(test.object).top + "px";
+    } else {
+      flash.style.top = parseInt(flash.style.top) + test.offsets["top"] + "px";
     }
     if (!seenLeft) {
       flash.style.left = getOffset(test.object).left + "px";
+    } else {
+      flash.style.left = parseInt(flash.style.left) + test.offsets["left"] + "px";
     }
   }
 
@@ -561,10 +575,7 @@ function flashCleanUp(victim){
       flashCleanUp(victim);
     } else {
       victim.parentNode.removeChild(victim);
-      if (document.animationTimeline.children[0].iterationTime
-          <= document.animationTimeline.children[0].animationDuration){
-        play();
-      }
+      if (testCurrentTime <= testLength) play();
     }
   }, pauseTime);
 }
@@ -607,8 +618,7 @@ add_completion_callback(function (allRes, status) {
 function assert_properties(test){
   var object = test.object;
   var targets = test.targets;
-  var time = document.animationTimeline.children[0].iterationTime;
-  if (time == null) time = 0;
+  var time = testCurrentTime;
 
   var isSVG = (object.nodeName != "DIV");
   var tempOb = isSVG ? document.createElementNS("http://www.w3.org/2000/svg",

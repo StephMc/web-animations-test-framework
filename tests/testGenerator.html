@@ -40,7 +40,8 @@ body{
 <div id = "checks"></div>
 
 <script>
-var parentAnimation;
+var testCurrentTime;
+var testLength = 0;
 var lastRun = false;
 var frameTime = 100;
 var checks = [];
@@ -71,10 +72,14 @@ function getSettings(){
   setTimeout(function(){
     var obProp = document.getElementById("obProp").value;
     process(obProp);
-    window.frame.reparent();
-    parentAnimation = window.frame.parentAnimation;
-    parentAnimation.currentTime = 0;
-    parentAnimation.pause();
+    // Get the length of the test
+    for (var x = 0; x < window.frame.document.timeline.getPlayers().length; x++){
+      var currPlayer = window.frame.document.timeline.getPlayers()[x];
+      testLength = currPlayer._timedItem.animationDuration > testLength ?
+                    currPlayer._timedItem.animationDuration : testLength;
+    }
+    setTestCurrentTime(0);
+    pause();
     setTimeout(generate, frameTime);
   }, 100);
 }
@@ -98,8 +103,7 @@ function process(rawString){
 
 function generate(){
   // Produce checks at this time
-  var time = parentAnimation.iterationTime == null ?
-      0 : parentAnimation.iterationTime;
+  var time = testCurrentTime;
   for (var x in checks){
     for(var i = 0; i < checks[x].object.length; i++){
       var isSVG = (checks[x].object[i].nodeName != "DIV");
@@ -120,10 +124,10 @@ function generate(){
     }
   }
   // Move the animations to the next point in time
-  parentAnimation.currentTime += interval;
+  setTestCurrentTime(testCurrentTime + interval);
 
   // Schedule this function to be called on the next frame refresh
-  if(parentAnimation.iterationTime < parentAnimation.animationDuration){
+  if(testCurrentTime < testLength){
     setTimeout(generate, frameTime);
   } else if(!lastRun){
     lastRun = true;
@@ -137,4 +141,18 @@ function printCheck(object, number, properties, time){
   var ouput = document.getElementById("checks");
   ouput.innerHTML += newCheck + "<br>";
 }
+
+function pause(){
+  for(var x in window.frame.document.timeline.getPlayers()){
+    window.frame.document.timeline.getPlayers()[x].pause();
+  }
+}
+
+function setTestCurrentTime(time){
+  for (var x in window.frame.document.timeline.getPlayers()){
+    window.frame.document.timeline.getPlayers()[x].currentTime = time;
+  }
+  testCurrentTime = time;
+}
+
 </script>

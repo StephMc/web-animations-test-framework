@@ -193,8 +193,8 @@ var colors = [
 setupTests({frameworkTimeout:200000});
 var anim = document.getElementById("victim");
 var displayTime = 0.3;
-new Animation(anim, {'background-color': colors},
-                     (colors.length - 1) * displayTime);
+document.timeline.createPlayer(new Animation(anim, {'background-color': colors},
+                     (colors.length - 1) * displayTime));
 
 for(var x in colors){
   check(anim, {"background-color":colors[x]}, x*displayTime, colors[x]);
