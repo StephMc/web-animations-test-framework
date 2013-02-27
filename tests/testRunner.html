@@ -55,8 +55,14 @@ body{
 var resultsOutputted = 0;
 var currentTest = 0;
 checkForResults();
-if (window.location.hash && tests.indexOf(window.location.hash.substr(1))){
-  currentTest = tests.indexOf(window.location.hash.substr(1));
+
+var queries = window.location.href.split("?")[1];
+if(queries){
+  var sha1 = queries.split("&")[0];
+  var testFileName = queries.split("&")[1];
+  if (testFileName && tests.indexOf(testFileName)){
+    currentTest = testFileName;
+  }
 }
 
 function updateState(change) {
@@ -66,6 +72,10 @@ function updateState(change) {
   }
   var test = tests[currentTest];
   window.location.hash = test;
+
+  var url = window.location.href.split("?");
+  window.location.href = url[0] + "?" + sha1 + "&" + test;
+
   document.querySelector('#test-name').innerText = (currentTest + 1) +
       ' of ' + tests.length + ': ' + test;
   document.querySelector('iframe').src = test;
