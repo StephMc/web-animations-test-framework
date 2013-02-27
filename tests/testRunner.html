@@ -18,9 +18,9 @@ var tests = [
   'run-fast-test-w3c.html',
   'test-calc-w3c.html',
   'test-color-w3c.html',
-  'test-composite-transforms-w3c.html',
+  //'test-composite-transforms-w3c.html',
   'test-groupings.html',
-  'test-compositor-w3c.html',
+  //'test-compositor-w3c.html',
   'Test-playback-rate.html',
   'test-steping.html',
   'test-to-animation.html',
@@ -51,18 +51,36 @@ body{
 <div id="test-name"></div>
 <iframe id = "frame"></iframe>
 <div id="results"></div>
+
 <script>
 var resultsOutputted = 0;
 var currentTest = 0;
-checkForResults();
 
-var queries = window.location.href.split("?")[1];
-if(queries){
-  var sha1 = queries.split("&")[0];
-  var testFileName = queries.split("&")[1];
-  if (testFileName && tests.indexOf(testFileName)){
-    currentTest = testFileName;
-  }
+var sha1 = window.location.href.split("?")[1];
+if(!sha1) sha1 = "unknown";
+var runID = createNewTestRun(sha1);
+
+checkForResults();
+updateState();
+
+function createNewTestRun(commitSha1){
+  var startPacket = {};
+  startPacket["type"] = "start";
+  startPacket["commitSHA"] = commitSha1;
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "http://localhost/web-animations-test-infrastructure/collectResults.php", false);
+  xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+  xhr.send("data=" + JSON.stringify(startPacket));
+  console.log("sent start message , waiting for reply");
+  return xhr.responseText;
+}
+
+function postResultsToServer(resultObject){
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "http://localhost/web-animations-test-infrastructure/collectResults.php", true);
+  xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+  xhr.send("data=" + JSON.stringify(resultObject));
+  console.log(JSON.stringify(resultObject));
 }
 
 function updateState(change) {
@@ -71,10 +89,6 @@ function updateState(change) {
     currentTest += change;
   }
   var test = tests[currentTest];
-  window.location.hash = test;
-
-  var url = window.location.href.split("?");
-  window.location.href = url[0] + "?" + sha1 + "&" + test;
 
   document.querySelector('#test-name').innerText = (currentTest + 1) +
       ' of ' + tests.length + ': ' + test;
@@ -92,6 +106,7 @@ function reRunTests(){
   resultsOutputted = 0;
   currentTest = 0;
   window.frame.testResults = undefined;
+  runID = createNewTestRun(sha1);
   updateState();
   checkForResults();
 }
@@ -104,10 +119,16 @@ function checkForResults(){
     if (currentTest < tests.length-1) updateState(1);
   }
   if (resultsOutputted < tests.length)
-      window.webkitRequestAnimationFrame(function(){ checkForResults(); });
+      window.webkitRequestAnimationFrame(checkForResults);
 }
 
 function logResults (results){
+  var testResult = {};
+  testResult["type"] = "result";
+  testResult["testRunID"] = runID;
+  testResult["testName"] = tests[currentTest];
+  var asserts = {};
+
   newTestDiv = document.createElement('div');
   newTestDiv.id = tests[currentTest];
   newTestDiv.innerHTML = tests[currentTest];
@@ -127,7 +148,12 @@ function logResults (results){
   }
   document.getElementById("results").appendChild(newTestDiv);
 
+  var i = 0;
   for (var x in results){
+    asserts[i] = {};
+    asserts[i]["result"] = results[x].status == 0 ? true : false;
+    asserts[i]["message"] = results[x].message == null ? "All good :)" : results[x].message;
+
     newResultsDiv.innerHTML += results[x].name + " ";
     if (results[x].status == 0) grade = "pass";
     else grade = "fail";
@@ -136,9 +162,13 @@ function logResults (results){
       newResultsDiv.innerHTML += results[x].message;
     }
     newResultsDiv.innerHTML += "<br>";
+    i++;
   }
   newResultsDiv.style.display = "none";
   newTestDiv.appendChild(newResultsDiv);
+
+  testResult["asserts"] = asserts;
+  postResultsToServer(testResult);
 }
 
 function showDetails(object){
@@ -160,5 +190,4 @@ function showDetails(object){
     updateState();
   }
 }
-updateState();
 </script>
