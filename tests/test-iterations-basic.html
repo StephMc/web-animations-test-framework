@@ -93,7 +93,7 @@ limitations under the License.
 <link rel='stylesheet' type="text/css" href="../animation-test-style.css">
 
 <script>
-setupTests();
+setupTests({"testLength":4});
 var containers = ["ca", "cb", "cc", "cd"];
 
 var directions = ["normal", "reverse", "alternate", "alternate-reverse"];
@@ -114,111 +114,67 @@ for (var i = 0; i < containers.length; i++) {
   // Test zero iterationCount.
   document.timeline.createPlayer(new Animation(container.getElementsByClassName("c")[0], {left: ["180px", "300px"]}, {duration: 1, iterationCount: 0.0}, groups[i]));
 }
-var aDivs = document.getElementsByClassName("a");
-var bDivs = document.getElementsByClassName("b");
-var cDivs = document.getElementsByClassName("c");
-console
 
-check(aDivs[0], {left:"100px"}, 1.01, "check end position of element a0 at time  1.01");
-check(aDivs[1], {left:"180px"}, 1.01, "check end position of element a1 at time 1.01");
-check(aDivs[2], {left:"100px"}, 1.01, "check end position of element a2 at time 1.01");
-check(aDivs[3], {left:"180px"}, 1.01, "check end position of element a3 at time 1.01");
-
-check(bDivs[0], {left:"100px"}, 1.01, "check end position of element b0 at time 1.01");
-check(bDivs[1], {left:"180px"}, 1.01, "check end position of element b1 at time 1.01");
-check(bDivs[2], {left:"100px"}, 1.01, "check end position of element b2 at time 1.01");
-check(bDivs[3], {left:"180px"}, 1.01, "check end position of element b3 at time 1.01");
-
-check(aDivs[0], {left:"100px"}, 2.01, "check end position of element a0 at time 2.01");
-check(aDivs[1], {left:"300px"}, 2.01, "check end position of element a1 at time 2.01");
-check(aDivs[2], {left:"100px"}, 2.01, "check end position of element a2 at time 2.01");
-check(aDivs[3], {left:"300px"}, 2.01, "check end position of element a3 at time 2.01");
-
-check(bDivs[0], {left:"100px"}, 2.01, "check end position of element b0 at time 2.01");
-check(bDivs[1], {left:"180px"}, 2.01, "check end position of element b1 at time 2.01");
-check(bDivs[2], {left:"100px"}, 2.01, "check end position of element b2 at time 2.01");
-check(bDivs[3], {left:"180px"}, 2.01, "check end position of element b3 at time 2.01");
-
-check(aDivs[0], {left:"100px"}, 3.01, "check end position of element a0 at time 3.01");
-check(aDivs[1], {left:"300px"}, 3.01, "check end position of element a1 at time 3.01");
-check(aDivs[2], {left:"100px"}, 3.01, "check end position of element a2 at time 3.01");
-check(aDivs[3], {left:"300px"}, 3.01, "check end position of element a3 at time 3.01");
-
-check(bDivs[0], {left:"100px"}, 3.01, "check end position of element b0 at time 3.01");
-check(bDivs[1], {left:"180px"}, 3.01, "check end position of element b1 at time 3.01");
-check(bDivs[2], {left:"100px"}, 3.01, "check end position of element b2 at time 3.01");
-check(bDivs[3], {left:"180px"}, 3.01, "check end position of element b3 at time 3.01");
-
-check(aDivs[0], {left:"100px"}, 4.01, "check end position of element a0 at time 4.01");
-check(aDivs[1], {left:"300px"}, 4.01, "check end position of element a1 at time 4.01");
-check(aDivs[2], {left:"100px"}, 4.01, "check end position of element a2 at time 4.01");
-check(aDivs[3], {left:"300px"}, 4.01, "check end position of element a3 at time 4.01");
-
-check(bDivs[0], {left:"180px"}, 4.01, "check end position of element b0 at time 4.01");
-check(bDivs[1], {left:"180px"}, 4.01, "check end position of element b1 at time 4.01");
-check(bDivs[2], {left:"180px"}, 4.01, "check end position of element b2 at time 4.01");
-check(bDivs[3], {left:"180px"}, 4.01, "check end position of element b3 at time 4.01");
-
-check(aDivs[0], {left:"100px"}, 5.01, "check end position of element a0 at time 5.01");
-check(aDivs[1], {left:"180px"}, 5.01, "check end position of element a1 at time 5.01");
-check(aDivs[2], {left:"180px"}, 5.01, "check end position of element a2 at time 5.01");
-check(aDivs[3], {left:"100px"}, 5.01, "check end position of element a3 at time 5.01");
-
-check(bDivs[0], {left:"100px"}, 5.01, "check end position of element b0 at time 5.01");
-check(bDivs[1], {left:"180px"}, 5.01, "check end position of element b1 at time 5.01");
-check(bDivs[2], {left:"180px"}, 5.01, "check end position of element b2 at time 5.01");
-check(bDivs[3], {left:"100px"}, 5.01, "check end position of element b3 at time 5.01");
-
-check(aDivs[0], {left:"100px"}, 6.01, "check end position of element a0 at time 6.01");
-check(aDivs[1], {left:"300px"}, 6.01, "check end position of element a1 at time 6.01");
-check(aDivs[2], {left:"300px"}, 6.01, "check end position of element a2 at time 6.01");
-check(aDivs[3], {left:"100px"}, 6.01, "check end position of element a3 at time 6.01");
-
-check(bDivs[0], {left:"100px"}, 6.01, "check end position of element b0 at time 6.01");
-check(bDivs[1], {left:"180px"}, 6.01, "check end position of element b1 at time 6.01");
-check(bDivs[2], {left:"180px"}, 6.01, "check end position of element b2 at time 6.01");
-check(bDivs[3], {left:"100px"}, 6.01, "check end position of element b3 at time 6.01");
-
-check(aDivs[0], {left:"100px"}, 7.01, "check end position of element a0 at time 7.01");
-check(aDivs[1], {left:"300px"}, 7.01, "check end position of element a1 at time 7.01");
-check(aDivs[2], {left:"300px"}, 7.01, "check end position of element a2 at time 7.01");
-check(aDivs[3], {left:"100px"}, 7.01, "check end position of element a3 at time 7.01");
-
-check(bDivs[0], {left:"100px"}, 7.01, "check end position of element b0 at time 7.01");
-check(bDivs[1], {left:"180px"}, 7.01, "check end position of element b1 at time 7.01");
-check(bDivs[2], {left:"180px"}, 7.01, "check end position of element b2 at time 7.01");
-check(bDivs[3], {left:"100px"}, 7.01, "check end position of element b3 at time 7.01");
-
-check(aDivs[0], {left:"100px"}, 8.01, "check end position of element a0 at time 8.01");
-check(aDivs[1], {left:"300px"}, 8.01, "check end position of element a1 at time 8.01");
-check(aDivs[2], {left:"300px"}, 8.01, "check end position of element a2 at time 8.01");
-check(aDivs[3], {left:"100px"}, 8.01, "check end position of element a3 at time 8.01");
-
-check(bDivs[0], {left:"180px"}, 8.01, "check end position of element b0 at time 8.01");
-check(bDivs[1], {left:"180px"}, 8.01, "check end position of element b1 at time 8.01");
-check(bDivs[2], {left:"180px"}, 8.01, "check end position of element b2 at time 8.01");
-check(bDivs[3], {left:"180px"}, 8.01, "check end position of element b3 at time 8.01");
-
-for(var i = 1.01; i <= 9; i++) {
-  for(var j = 0; j < cDivs.length; j++) {
-    check(cDivs[j], {left:"180px"}, i, "Check end positition of element c" + j + " at time " + i);
-  }
-}
-
-check(aDivs[0], {left:"180px"}, 9, "check end position of element a0 at time 9");
-check(aDivs[1], {left:"0px"}, 9, "check end position of element a1 at time 9");
-check(aDivs[2], {left:"0px"}, 9, "check end position of element a2 at time 9");
-check(aDivs[3], {left:"180px"}, 9, "check end position of element a3 at time 9");
-
-check(bDivs[0], {left:"180px"}, 9, "check end position of element b0 at time 9");
-check(bDivs[1], {left:"0px"}, 9, "check end position of element b1 at time 9");
-check(bDivs[2], {left:"0px"}, 9, "check end position of element b2 at time 9");
-check(bDivs[3], {left:"180px"}, 9, "check end position of element b3 at time 9");
-
-check(cDivs[0], {left:"180px"}, 9, "check end position of element c0 at time 9");
-check(cDivs[1], {left:"0px"}, 9, "check end position of element c1 at time 9");
-check(cDivs[2], {left:"0px"}, 9, "check end position of element c2 at time 9");
-check(cDivs[3], {left:"180px"}, 9, "check end position of element c3 at time 9");
+check(document.querySelectorAll('.anim')[0],{'left':'100px'},0);
+check(document.querySelectorAll('.anim')[1],{'left':'100px'},0);
+check(document.querySelectorAll('.anim')[2],{'left':'180px'},0);
+check(document.querySelectorAll('.anim')[3],{'left':'100px'},0);
+check(document.querySelectorAll('.anim')[4],{'left':'100px'},0);
+check(document.querySelectorAll('.anim')[5],{'left':'180px'},0);
+check(document.querySelectorAll('.anim')[6],{'left':'100px'},0);
+check(document.querySelectorAll('.anim')[7],{'left':'100px'},0);
+check(document.querySelectorAll('.anim')[8],{'left':'180px'},0);
+check(document.querySelectorAll('.anim')[9],{'left':'100px'},0);
+check(document.querySelectorAll('.anim')[10],{'left':'100px'},0);
+check(document.querySelectorAll('.anim')[11],{'left':'180px'},0);
+check(document.querySelectorAll('.anim')[0],{'left':'100px'},1);
+check(document.querySelectorAll('.anim')[1],{'left':'100px'},1);
+check(document.querySelectorAll('.anim')[2],{'left':'180px'},1);
+check(document.querySelectorAll('.anim')[3],{'left':'100px'},1);
+check(document.querySelectorAll('.anim')[4],{'left':'100px'},1);
+check(document.querySelectorAll('.anim')[5],{'left':'180px'},1);
+check(document.querySelectorAll('.anim')[6],{'left':'100px'},1);
+check(document.querySelectorAll('.anim')[7],{'left':'100px'},1);
+check(document.querySelectorAll('.anim')[8],{'left':'180px'},1);
+check(document.querySelectorAll('.anim')[9],{'left':'100px'},1);
+check(document.querySelectorAll('.anim')[10],{'left':'100px'},1);
+check(document.querySelectorAll('.anim')[11],{'left':'180px'},1);
+check(document.querySelectorAll('.anim')[0],{'left':'100px'},2);
+check(document.querySelectorAll('.anim')[1],{'left':'100px'},2);
+check(document.querySelectorAll('.anim')[2],{'left':'180px'},2);
+check(document.querySelectorAll('.anim')[3],{'left':'100px'},2);
+check(document.querySelectorAll('.anim')[4],{'left':'100px'},2);
+check(document.querySelectorAll('.anim')[5],{'left':'180px'},2);
+check(document.querySelectorAll('.anim')[6],{'left':'100px'},2);
+check(document.querySelectorAll('.anim')[7],{'left':'100px'},2);
+check(document.querySelectorAll('.anim')[8],{'left':'180px'},2);
+check(document.querySelectorAll('.anim')[9],{'left':'100px'},2);
+check(document.querySelectorAll('.anim')[10],{'left':'100px'},2);
+check(document.querySelectorAll('.anim')[11],{'left':'180px'},2);
+check(document.querySelectorAll('.anim')[0],{'left':'100px'},3);
+check(document.querySelectorAll('.anim')[1],{'left':'180px'},3);
+check(document.querySelectorAll('.anim')[2],{'left':'180px'},3);
+check(document.querySelectorAll('.anim')[3],{'left':'100px'},3);
+check(document.querySelectorAll('.anim')[4],{'left':'180px'},3);
+check(document.querySelectorAll('.anim')[5],{'left':'180px'},3);
+check(document.querySelectorAll('.anim')[6],{'left':'100px'},3);
+check(document.querySelectorAll('.anim')[7],{'left':'180px'},3);
+check(document.querySelectorAll('.anim')[8],{'left':'180px'},3);
+check(document.querySelectorAll('.anim')[9],{'left':'100px'},3);
+check(document.querySelectorAll('.anim')[10],{'left':'180px'},3);
+check(document.querySelectorAll('.anim')[11],{'left':'180px'},3);
+check(document.querySelectorAll('.anim')[0],{'left':'180px'},4);
+check(document.querySelectorAll('.anim')[1],{'left':'180px'},4);
+check(document.querySelectorAll('.anim')[2],{'left':'180px'},4);
+check(document.querySelectorAll('.anim')[3],{'left':'180px'},4);
+check(document.querySelectorAll('.anim')[4],{'left':'180px'},4);
+check(document.querySelectorAll('.anim')[5],{'left':'180px'},4);
+check(document.querySelectorAll('.anim')[6],{'left':'180px'},4);
+check(document.querySelectorAll('.anim')[7],{'left':'180px'},4);
+check(document.querySelectorAll('.anim')[8],{'left':'180px'},4);
+check(document.querySelectorAll('.anim')[9],{'left':'180px'},4);
+check(document.querySelectorAll('.anim')[10],{'left':'180px'},4);
+check(document.querySelectorAll('.anim')[11],{'left':'180px'},4);
 
 runTests();
 </script>
