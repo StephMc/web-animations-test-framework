@@ -150,10 +150,14 @@ function logResults (results){
   document.getElementById("results").appendChild(newTestDiv);
 
   var i = 0;
+  var numberOfAsserts = 0;
   for (var x in results){
-    asserts[i] = {};
-    asserts[i]["result"] = results[x].status == 0 ? true : false;
-    asserts[i]["message"] = results[x].message == null ? "All good :)" : results[x].message;
+    if(results[x].status == 0){
+      asserts[i] = {};
+      asserts[i]["message"] = results[x].message == null ?
+        "Fail but no message" : results[x].message;
+      i++;
+    }
 
     newResultsDiv.innerHTML += results[x].name + " ";
     if (results[x].status == 0) grade = "pass";
@@ -163,12 +167,13 @@ function logResults (results){
       newResultsDiv.innerHTML += results[x].message;
     }
     newResultsDiv.innerHTML += "<br>";
-    i++;
+    numberOfAsserts++;
   }
   newResultsDiv.style.display = "none";
   newTestDiv.appendChild(newResultsDiv);
 
   testResult["asserts"] = asserts;
+  testResult["numberOfAsserts"] = numberOfAsserts;
   postResultsToServer(testResult);
 }
 
