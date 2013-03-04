@@ -58,16 +58,27 @@ Written by Steph McArthur
 <script>
 setupTests();
 
-new Animation(document.querySelector(".anim"), {left: "600px"}, {duration: 4});
-new Animation(document.querySelectorAll(".anim")[1], {top: "200px"}, {duration: 2});
-new Animation(document.querySelectorAll(".anim")[2], {top: "200px", left:"600px"}, {duration: 4});
+var dt = document.timeline;
 
-check(document.querySelectorAll(".anim")[0], {left:"300px"}, 1, "300px at 3 secs");
-check(document.querySelector(".anim"), {"left":"600px"}, 2, "moved the right rate");
-check(document.querySelectorAll(".anim")[1], {"top":"200px"}, 2, "moved the right amount gfdghhgfd");
-check(document.querySelectorAll(".anim")[1], {"top":"100px"}, 1, "moved the right amount gfdgggg");
-check(document.querySelectorAll(".anim")[2], {"top":"100px"}, 1, "moved the right amount ffggg");
-check(document.querySelectorAll(".anim")[2], {"left":"400px"}, 1.33, "moved the right amount ffg");
+dt.createPlayer(new Animation(document.querySelector(".anim"), {left: "600px"}, {duration: 4}));
+dt.createPlayer(new Animation(document.querySelectorAll(".anim")[1], {top: "200px"}, {duration: 2}));
+dt.createPlayer(new Animation(document.querySelectorAll(".anim")[2], {top: "200px", left:"600px"}, {duration: 4}));
+
+check(document.querySelectorAll('.anim')[0],{'top':'0px'},0);
+check(document.querySelectorAll('.anim')[1],{'top':'0px'},0);
+check(document.querySelectorAll('.anim')[2],{'top':'0px'},0);
+check(document.querySelectorAll('.anim')[0],{'top':'0px'},1);
+check(document.querySelectorAll('.anim')[1],{'top':'50px'},1);
+check(document.querySelectorAll('.anim')[2],{'top':'50px'},1);
+check(document.querySelectorAll('.anim')[0],{'top':'0px'},2);
+check(document.querySelectorAll('.anim')[1],{'top':'200px'},2);
+check(document.querySelectorAll('.anim')[2],{'top':'100px'},2);
+check(document.querySelectorAll('.anim')[0],{'top':'0px'},3);
+check(document.querySelectorAll('.anim')[1],{'top':'210px'},3);
+check(document.querySelectorAll('.anim')[2],{'top':'150px'},3);
+check(document.querySelectorAll('.anim')[0],{'top':'0px'},4);
+check(document.querySelectorAll('.anim')[1],{'top':'180px'},4);
+check(document.querySelectorAll('.anim')[2],{'top':'200px'},4);
 runTests();
 </script>
 

@@ -78,8 +78,8 @@ function getSettings(){
       testLength = currPlayer._timedItem.animationDuration > testLength ?
                     currPlayer._timedItem.animationDuration : testLength;
     }
-    setTestCurrentTime(0);
     pause();
+    setTestCurrentTime(0);
     setTimeout(generate, frameTime);
   }, 100);
 }
