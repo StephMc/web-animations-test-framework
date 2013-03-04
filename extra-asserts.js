@@ -348,14 +348,14 @@ function getOffset(el){
 
 //Call this after lining up the tests with check
 function runTests(){
-  for (var x in checkStack){
-    var c = checkStack[x];
-    checkProcessor(c.object, c.targets, c.time, c.testName);
-  }
   for (var x = 0; x < document.timeline.getPlayers().length; x++){
     var currPlayer = document.timeline.getPlayers()[x];
     testLength = currPlayer._timedItem.animationDuration > testLength ?
                   currPlayer._timedItem.animationDuration : testLength;
+  }
+  for (var x in checkStack){
+    var c = checkStack[x];
+    checkProcessor(c.object, c.targets, c.time, c.testName);
   }
 
   requestFrame(function(){ animTimeViewer(document.timeline.currentTime()); });
