@@ -68,7 +68,7 @@ function createNewTestRun(commitSha1){
   startPacket["type"] = "start";
   startPacket["commitSHA"] = commitSha1;
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "http://localhost/web-animations-test-infrastructure/collectResults.php", false);
+  xhr.open("POST", "http://14.200.8.150/web-animations-test-infrastructure/collectResults.php", false);
   xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
   xhr.send("data=" + JSON.stringify(startPacket));
   console.log("sent start message , waiting for reply");
@@ -77,7 +77,7 @@ function createNewTestRun(commitSha1){
 
 function postResultsToServer(resultObject){
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "http://localhost/web-animations-test-infrastructure/collectResults.php", true);
+  xhr.open("POST", "http://14.200.8.150/web-animations-test-infrastructure/collectResults.php", true);
   xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
   xhr.send("data=" + JSON.stringify(resultObject));
   console.log(JSON.stringify(resultObject));
