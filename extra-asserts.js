@@ -27,7 +27,7 @@ var runInAutoMode;
 // Holds which test packet we are up to.
 var testIndex = 0;
 // How long the test is
-var testLength = 0;
+var testLength;
 // Extra-asserts current time
 var testCurrentTime = 0;
 //Each index holds all the tests that occur at the same time
@@ -89,9 +89,14 @@ function CheckStore(object, targets, time, testName){
 // It generates the testing buttons and log and the testharness setup.
 function setupTests(timeouts) {
   // Use any user stated timeouts
+  console.log(timeouts);
   for (var x in timeouts) {
-    if (timeouts[x] == "frameworkTimeout") frameworkTimeout = timeouts[x];
-    else if (timeouts[x] == "testTimeout") testTimeout = timeouts[x];
+    if (x == "frameworkTimeout") frameworkTimeout = timeouts[x];
+    else if (x == "testTimeout") testTimeout = timeouts[x];
+    else if (x == "testLength"){
+      testLength = timeouts[x];
+      console.log(testLength);
+    }
   }
 
   // Set up padding for option bar
@@ -348,11 +353,15 @@ function getOffset(el){
 
 //Call this after lining up the tests with check
 function runTests(){
-  for (var x = 0; x < document.timeline.getPlayers().length; x++){
-    var currPlayer = document.timeline.getPlayers()[x];
-    testLength = currPlayer._timedItem.animationDuration > testLength ?
-                  currPlayer._timedItem.animationDuration : testLength;
+  if(testLength === undefined){
+    testLength = 0;
+    for (var x = 0; x < document.timeline.getPlayers().length; x++){
+      var currPlayer = document.timeline.getPlayers()[x];
+      testLength = currPlayer._timedItem.animationDuration > testLength ?
+                    currPlayer._timedItem.animationDuration : testLength;
+    }
   }
+
   for (var x in checkStack){
     var c = checkStack[x];
     checkProcessor(c.object, c.targets, c.time, c.testName);

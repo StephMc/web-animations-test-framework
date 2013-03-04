@@ -49,14 +49,16 @@ limitations under the License.
 <link rel='stylesheet' type="text/css" href="../animation-test-style.css">
 
 <script>
-setupTests();
+setupTests({"testLength":3});
 var elems = document.querySelectorAll(".anim");
 var anim = [];
 var props = [];
 
 for (var i = 0; i < elems.length; i++) {
   var element = elems[i];
-  document.timeline.createPlayer(new Animation(element, {left: ["0px", "200px"]}, 1, new ParGroup([], {iterationCount: element.textContent})));
+  var parGroup = new ParGroup([]);
+  var fish = new Animation(element, {left: ["0px", "200px"]}, {iterationCount: element.textContent, duration:1}, parGroup);
+  document.timeline.createPlayer(fish);
 }
 
 for (var i = 0; i < elems.length; i++) {
