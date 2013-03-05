@@ -152,7 +152,7 @@ function logResults (results){
   var i = 0;
   var numberOfAsserts = 0;
   for (var x in results){
-    if(results[x].status == 0){
+    if(results[x].status != 0){
       asserts[i] = {};
       asserts[i]["message"] = results[x].message == null ?
         "Fail but no message" : results[x].message;
