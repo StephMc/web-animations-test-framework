@@ -56,25 +56,13 @@ body{
 <script>
 var resultsOutputted = 0;
 var currentTest = 0;
+// Stops the test result finish message being sent repeatedly
+var hasFinished = false;
 
-var sha1 = window.location.href.split("?")[1];
-if(!sha1) sha1 = "unknown";
-var runID = createNewTestRun(sha1);
+var runID = window.location.href.split("?")[1];
 
 checkForResults();
 updateState();
-
-function createNewTestRun(commitSha1){
-  var startPacket = {};
-  startPacket["type"] = "start";
-  startPacket["commitSHA"] = commitSha1;
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", "http://14.200.8.150/web-animations-test-infrastructure/collectResults.php", false);
-  xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-  xhr.send("data=" + JSON.stringify(startPacket));
-  console.log("sent start message , waiting for reply");
-  return xhr.responseText;
-}
 
 function postResultsToServer(resultObject){
   var xhr = new XMLHttpRequest();
@@ -106,6 +94,7 @@ function reRunTests(){
   document.body.appendChild(newResults);
   resultsOutputted = 0;
   currentTest = 0;
+  hasFinished = false;
   window.frame.testResults = undefined;
   runID = createNewTestRun(sha1);
   updateState();
@@ -121,6 +110,12 @@ function checkForResults(){
   }
   if (resultsOutputted < tests.length)
       window.webkitRequestAnimationFrame(checkForResults);
+  else {
+     var finishPacket = {};
+     finishPacket["type"] = "finished";
+     hasFinished = true;
+     postResultsToServer(finishPacket);
+  }
 }
 
 function logResults (results){
