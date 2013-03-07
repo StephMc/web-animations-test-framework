@@ -78,7 +78,7 @@ document.timeline.createPlayer(leftDown);
 //leftDown.play();
 check(topObject, {"left":"300px"}, 0.5, "The elements have moved left");
 check(topObject, {"top":"300px"}, 1.5, "The elements have moved down");
-check(topObject, {refTest:true, "left":bottomObject, "top":bottomObject}, 0.2, "Objects move together");
+check(topObject, {"left":bottomObject, "top":bottomObject}, 0.2, "Objects move together", true);
 
 runTests();
 </script>

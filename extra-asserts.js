@@ -635,53 +635,67 @@ add_completion_callback(function (allRes, status) {
 ///////////////////////////////////////////////////////////////////////////////
 function assert_properties(test) {
   var object = test.object;
-  var targets = test.targets;
+  var targetProperties = test.targets;
   var time = testCurrentTime;
+  var isSVG = object.nodeName !== "DIV";
 
-  var isSVG = (object.nodeName != "DIV");
-  var tempOb = isSVG ? document.createElementNS("http://www.w3.org/2000/svg",
+  // Create an element of the same type as testing so the style can be applied
+  // from the test. This is so the css property (not the -webkit-does-something
+  // tag) can be read.
+  var referenceElement = isSVG ? document.createElementNS("http://www.w3.org/2000/svg",
       object.nodeName) : document.createElement(object.nodeName);
-  tempOb.style.position = "absolute";
-  object.parentNode.appendChild(tempOb);
+  referenceElement.style.position = "absolute";
+  object.parentNode.appendChild(referenceElement);
 
-  for (var propName in targets) {
-    if (targets[propName].nodeName != undefined) {
-      var tar = (targets[propName].currentStyle ||
-                 getComputedStyle(targets[propName], null))[propName];
-    } else var tar = targets[propName];
+  // Apply the style
+  for (var propName in targetProperties) {
+    // If the passed in value is an element then grab its current style for
+    // that property
+    if (targetProperties[propName] instanceof HTMLElement ||
+        targetProperties[propName] instanceof SVGElement) {
+      var propertyValue = getComputedStyle(targetProperties[propName],
+                                           null)[propName];
+    } else {
+      var propertyValue = targetProperties[propName];
+    }
+
     if (isSVG) {
-      if (propName.indexOf("transform") == -1){
-        tempOb.setAttribute(propName, tar);
+      if (propName.indexOf("transform") == -1) {
+        referenceElement.setAttribute(propName, propertyValue);
       }
-    } else tempOb.style[propName] = tar;
+    } else {
+      referenceElement.style[propName] = propertyValue;
+    }
   }
 
   if (isSVG){
-    var compS = object.attributes;
-    var tempS = tempOb.attributes;
+    var currentStyle = object.attributes;
+    var targetStyle = referenceElement.attributes;
   } else {
-    var compS = object.currentStyle || getComputedStyle(object, null);
-    var tempS = tempOb.currentStyle || getComputedStyle(tempOb, null);
+    var currentStyle = getComputedStyle(object, null);
+    var targetStyle = getComputedStyle(referenceElement, null);
   }
-  for (var propName in targets) {
+  // For each css property strip it down to just numbers then
+  // apply the assert
+  for (var propName in targetProperties) {
     if (isSVG && propName.indexOf("transform") != -1) {
-      assert_transform(object, targets[propName]);
+      assert_transform(object, targetProperties[propName], message);
     } else {
-      if (isSVG){
-        var tar = tempS[propName].value;
-        var curr = compS[propName].value;
+      if (isSVG) {
+        var target = targetStyle[propName].value;
+        var curr = currentStyle[propName].value;
       } else {
-        var tar = tempS[propName];
-        var curr = compS[propName];
+        var target = targetStyle[propName];
+        var curr = currentStyle[propName];
       }
 
-      var t = tar.replace(/[^0-9.\s]/g, "");
+      var t = target.replace(/[^0-9.\s]/g, "");
       var c = curr.replace(/[^0-9.\s]/g, "");
       if(t.length == 0) {
         // Assume it's a word property so do an exact assert
         test.test.step(function (){
-          assert_equals(curr, tar, "At time " + time + ", " + propName +
-              " is not correct. Target: " + tar + " Current state: " + curr);
+          assert_equals(curr, target, "At time " + time + ", " + propName +
+              " is not correct. Target: " + target + " Current state: " + curr);
         });
       } else {
         t = t.split(" ");
@@ -689,13 +703,13 @@ function assert_properties(test) {
         for (var x in t){
           test.test.step(function (){
             assert_equals(Number(c[x]), Number(t[x]), "At time " + time + ", " + propName +
-                " is not correct. Target: " + tar + " Current state: " + curr);
+                " is not correct. Target: " + target + " Current state: " + curr);
           });
         }
       }
     }
   }
-  tempOb.parentNode.removeChild(tempOb);
+  referenceElement.parentNode.removeChild(referenceElement);
   test.complete = true;
 }
 
