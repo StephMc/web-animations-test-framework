@@ -59,6 +59,8 @@ var currentTest = 0;
 // Stops the test result finish message being sent repeatedly
 var hasFinished = false;
 
+var passedResults = 0;
+
 var runID = window.location.href.split("?")[1];
 
 checkForResults();
@@ -93,6 +95,7 @@ function reRunTests(){
   newResults.id = "results";
   document.body.appendChild(newResults);
   resultsOutputted = 0;
+  passedResults = 0;
   currentTest = 0;
   hasFinished = false;
   window.frame.testResults = undefined;
@@ -113,6 +116,8 @@ function checkForResults(){
   else {
      var finishPacket = {};
      finishPacket["type"] = "finished";
+     finishPacket["testsPassed"] = passedResults + " out of " + resultsOutputted;
+     finishPacket["testRunId"] = runID;
      hasFinished = true;
      postResultsToServer(finishPacket);
   }
@@ -133,6 +138,7 @@ function logResults (results){
   for (var x in results){
     if (results[x].status != 0) grade = "fail";
   }
+  if (grade == "pass") passedResults++;
 
   var newResultsDiv = document.createElement('div');
   if (grade == "pass"){
