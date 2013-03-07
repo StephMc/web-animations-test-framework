@@ -715,12 +715,14 @@ function assert_transform(object, target){
   target = target.split(/[()]+/);
 
   for (var x = 0; x < currStyle.length - 1; x++){
-    assert_equals(currStyle[x], target[x], "TODO");
+    assert_equals(currStyle[x], target[x], "At time " + testCurrentTime + ", " +
+        "Target: " + target[x] + " Current state: " + currStyle[x]);
     x++;
     var c = currStyle[x].split(",");
     var t = target[x].split(",");
     for (var i in c){
-      assert_equals(c[i], t[i], "TODO");
+      assert_equals(c[i], t[i], "At time " + testCurrentTime + ", " +
+        "Target: " + t + " Current state: " + c);
     }
   }
 }
