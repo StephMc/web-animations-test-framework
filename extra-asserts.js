@@ -679,7 +679,7 @@ function assert_properties(test) {
   // apply the assert
   for (var propName in targetProperties) {
     if (isSVG && propName.indexOf("transform") != -1) {
-      assert_transform(object, targetProperties[propName], message);
+      assert_transform(object, targetProperties[propName]);
     } else {
       if (isSVG) {
         var target = targetStyle[propName].value;

@@ -78,7 +78,7 @@ for (var i = 0; i < topObjects.length; i++) {
 }
 
 for (var i = 0; i < topObjects.length; i++) {
-  check(topObjects[i], {"refTest":true, "left":bottomObjects[i]}, 1, "Ref Test "+ i);
+  check(topObjects[i], {"left":bottomObjects[i]}, 1, "Ref Test "+ i, true);
   check(topObjects[i], {"left":"100px"}, 0, "Start position check "+ i);
   check(topObjects[i], {"left":"600px"}, 2, "End position check "+ i);
 }
