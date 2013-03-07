@@ -38,14 +38,14 @@ limitations under the License.
 <link rel='stylesheet' type="text/css" href="../animation-test-style.css">
 
 <script>
-setupTests();
+setupTests({testLength:7});
 
 var rect = document.querySelector(".anim")
 var rect2 = document.querySelector(".anim2")
 
 document.timeline.createPlayer(new Animation(rect, {x: ["0px", "400px"]}, 3));
 document.timeline.createPlayer(new Animation(rect, {x: ["0px", "200px"], operation: 'add'}, {startDelay: 1, duration: 4}));
-document.timeline.createPlayer(new Animation(rect, {x: ["0px", "200px"], operation: 'merge'}, {startDelay: 2, duration: 5});
+document.timeline.createPlayer(new Animation(rect, {x: ["0px", "200px"], operation: 'merge'}, {startDelay: 2, duration: 5}));
 
 document.timeline.createPlayer(new Animation(rect2, {"-webkit-transform": ["translate(0px, 0px)", "translate(200px, 200px)"]}, 3));
 document.timeline.createPlayer(new Animation(rect2, {"-webkit-transform": ["rotate(0deg) translate(0px, 0px)",
@@ -55,8 +55,8 @@ document.timeline.createPlayer(new Animation(rect2, {"-webkit-transform": ["tran
 check(rect, {x:"408px"}, 3, "SVG check");
 check(rect, {x:"200px"}, 7, "SVG check 2");
 
-check(rect2, {"-webkit-transform": "translate(160px, 160px) rotate(36deg) translate(40px) scale(1)"}, 3, "SVG rect2");
-check(rect2, {"-webkit-transform": "translate(0px, 0px) rotate(0deg) translate(0px) scale(2)"}, 7, "SVG rect2 2");
+check(rect2, {"-webkit-transform": "translate(160px, 160px) rotate(36deg) translate(40px, 0px) scale(1.04)"}, 3, "SVG rect2");
+check(rect2, {"-webkit-transform": "translate(0px, 0px) rotate(0deg) translate(0px, 0px) scale(2)"}, 7, "SVG rect2 2");
 
 runTests();
 </script>
