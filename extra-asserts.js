@@ -605,28 +605,22 @@ function flashCleanUp(victim) {
 }
 
 function toggleFlash() {
-  var allFlash = [];
   var elements = document.getElementById("svgBox").childNodes;
-  for (var i = 0; i < elements.length; i++) allFlash.push(elements[i]);
-  elements = document.getElementsByClassName("flash");
-  for (var i = 0; i < elements.length; i++) allFlash.push(elements[i]);
-
-  for (var i in allFlash) {
-    var type = allFlash[i].nodeName;
-    if (type == "DIV") {
-      if (allFlash[i].style.display == 'block') {
-        allFlash[i].style.display = 'none';
-      } else {
-        allFlash[i].style.display = 'block';
-      }
+  for (var i = 0; i < elements.length; i++){
+    if (elements[i].getAttribute("fill-opacity") == 1){
+      elements[i].setAttribute("fill-opacity", 0);
+      elements[i].setAttribute("stroke-width", "0px");
     } else {
-      if (allFlash[i].getAttribute("fill-opacity") == 1){
-        allFlash[i].setAttribute("fill-opacity", 0);
-        allFlash[i].setAttribute("stroke-width", "0px");
-      } else {
-        allFlash[i].setAttribute("fill-opacity", 1);
-        allFlash[i].setAttribute("stroke-width", "3px");
-      }
+      elements[i].setAttribute("fill-opacity", 1);
+      elements[i].setAttribute("stroke-width", "3px");
+    }
+  }
+  elements = document.getElementsByClassName("flash");
+  for (var i = 0; i < elements.length; i++) {
+    if (elements[i].style.display == 'block') {
+      elements[i].style.display = 'none';
+    } else {
+      elements[i].style.display = 'block';
     }
   }
 }
@@ -715,9 +709,11 @@ function assert_transform(object, target){
   target = target.split(/[()]+/);
 
   for (var x = 0; x < currStyle.length - 1; x++){
+    // Compare property name
     assert_equals(currStyle[x], target[x], "At time " + testCurrentTime + ", " +
         "Target: " + target[x] + " Current state: " + currStyle[x]);
     x++;
+    // Compare property values
     var c = currStyle[x].split(",");
     var t = target[x].split(",");
     for (var i in c){
