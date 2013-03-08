@@ -746,7 +746,6 @@ window.runTests = runTests;
 window.restart = restart;
 window.toggleFlash = toggleFlash;
 window.animPause = animPause;
-window.setState = setState;
 
 window.skipFrameForward = skipFrameForward;
 window.skipFrameBack = skipFrameBack;
